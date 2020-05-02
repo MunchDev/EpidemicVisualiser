@@ -11,7 +11,7 @@ def get_country_data(country, days, date):
     
     entries = []
     for i in range(days, -1, -1):
-        entries.append(csv_processor.parse_data(helper.modify_date(date, -i)))
+        entries.append(csv_processor.parse_data(helper.modify_date(date, -i))[country])
 
     return entries
 
