@@ -131,3 +131,4 @@ dmypy.json
 # Virtualenv
 bin/
 lib/
+pyvenv.cfg
