@@ -36,7 +36,7 @@ def parse_data(date):
 	"""
 
 	#Check if data set already exists
-	filename = "".join(date.split("-")) + ".csv"
+	filename = "".join(date.split("-")) + ".json"
 	if path.isfile("../cache/" + filename):
 		f = open("../cache/" + filename)
 		data_set = json.load(f)	
@@ -57,7 +57,6 @@ def parse_data(date):
 
 	#Process
 	data_set = dict()
-	print("[Debug] Process data for {}".format(date))
 	for entry in data:
 		country_name = entry[3]
 		confirmed = int(entry[7])
@@ -74,9 +73,10 @@ def parse_data(date):
 			data_set[country_name] = [confirmed, deaths, recovered, active]
 	
 	#Save processed data for future use
-	filename = "".join(date.split("-")) + ".csv"
+	filename = "".join(date.split("-")) + ".json"
 	f = open("../cache/" + filename, "w")
 	f.write(json.dumps(data_set))
+    f.close()
 
 	#Return data set
 	return data_set
