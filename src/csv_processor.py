@@ -7,7 +7,7 @@ from io import StringIO
 def fetch_data(date):
     """
     Fetch data for the date (in dd-mm-yyyy format) from a Github repository.
-    Index:			    0123456789
+    Index:			            0123456789
     """
 
     #URL builder

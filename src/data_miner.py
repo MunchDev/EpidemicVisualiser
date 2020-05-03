@@ -1,6 +1,11 @@
 import csv_processor
 import helper
 import datetime
+import json
+
+f = open("../cache/population.json")
+population = json.load(f)
+f.close()
 
 def get_country_data(country, days, date):
     """
@@ -10,7 +15,7 @@ def get_country_data(country, days, date):
     """
     
     entries = []
-    for i in range(days, -1, -1):
+    for i in range(days-1, -1, -1):
         entries.append(csv_processor.parse_data(helper.modify_date(date, -i))[country])
 
     return entries
@@ -24,15 +29,36 @@ def nowS(preS, beta, _nowI):
 def nowR(preR, gamma, _nowI):
     return preR+gamma*_nowI
 
-def nowBetaFromData(deltaS, _nowS, _nowI):
-    return -deltaS/(_nowS*_nowI)
-
-def nowGammaFromData(nowBeta, _nowS, _nowI, deltaI):
-    return (nowBeta*_nowS*_nowI-deltaI)/_nowI
-
 def train(country, date):
     """
-    Find gamma and beta of a country, given data from the past 30 days.
+    Find gamma and beta of a country, given data from the past 31 days.
     """
-    data = get_country_data(country, 30, date)
+    data = get_country_data(country, 31, date)
+    pop = population[country]
+
+    #Calculate beta and gamma
+    beta = gamma = 0
+    for i in range(1, len(data)):
+        deltaS = (pop-data[i][0])-(pop-data[i-1][0])
+        deltaI = data[i][3]-data[i-1][3]
+        nowS = pop-data[i][0]
+        nowI = data[i][3]
+
+        
+        nowBeta = -deltaS/(nowS*nowI)
+        nowGamma = (nowBeta*nowS*nowI-deltaI)/nowI
+
+        beta += nowBeta
+        gamma += nowGamma
+
+    beta /= 30
+    gamma /= 30
+    return [beta, gamma]
+
+def predict(country, date):
+    """
+    Generate a hypethetical scenerio of the epidemic, from the date onwards.
+    """
+    beta, gamma = train(country, helper.modify_date(date, -1))
     
+
