@@ -2,6 +2,8 @@ import csv_processor
 import helper
 import datetime
 import json
+import numpy as np
+import matplotlib.pyplot as plt
 
 f = open("../cache/population.json")
 population = json.load(f)
