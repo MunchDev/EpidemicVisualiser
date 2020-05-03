@@ -28,7 +28,7 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     if type(country) != str or type(date) != str or type(timespan) != int:
         print("Invalid input")
         return
-    if not is_valid_date(date):
+    if not helper.is_valid_date(date):
         print("Invalid date")
         return
     if timespan <= 0:
@@ -82,7 +82,7 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     return
 
 def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
-    if type(country) != str or type(date) != str or type(timespan) != int:
+    if type(countries) != list or type(colours) != list or type(date) != str or type(timespan) != int:
         print("Invalid input type")
         return
     
@@ -101,7 +101,7 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
         print("Invalid plot type")
         return
     
-    if not is_valid_date(date):
+    if not helper.is_valid_date(date):
         print("Invalid date")
         return
     if timespan <= 0:
