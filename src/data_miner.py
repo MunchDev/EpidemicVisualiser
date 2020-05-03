@@ -35,16 +35,28 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     recovered = np.array(recovered)
     active = np.array(active)
 
+    if scale != "log" and scale != "linear":
+        print("Invalid scale")
+        return
     plt.yscale(scale)
-
+    
+    plot_enabled = False
     if "c" in plot_type:
         plt.plot(x_data, confirmed, '.b-', label="Confirmed")
+        plot_enabled = True
     if "r" in plot_type:
         plt.plot(x_data, recovered, '.g-', label="Recovered")
+        plot_enabled = True
     if "d" in plot_type:
         plt.plot(x_data, deaths, '.k-', label="Deaths")
+        plot_enabled = True
     if "a" in plot_type:
         plt.plot(x_data, active, '.r-', label="Active")
+        plot_enabled = True
+    
+    if not plot_enabled:
+        print("No valid plot type is provided")
+        return
 
     plt.xlabel("Number of days since the latest report")
     plt.ylabel("Number of cases")
@@ -57,6 +69,10 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
     plt.xlabel("Number of days since the latest report")
     plt.ylabel("Number of cases")
     plt.title("COVID-19 tallies over the world")
+    
+    if scale != "log" and scale != "linear":
+        print("Invalid scale")
+        return
     plt.yscale(scale)
     
     chosen_option = None
