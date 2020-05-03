@@ -57,7 +57,7 @@ def world_tally_plot(countries, colours, date, timespan, scale):
     plt.xlabel("Number of days since the latest report")
     plt.ylabel("Number of cases")
     plt.title("COVID-19 tallies over the world")
-    plt.legend(loc="best")
+    plt.yscale(scale)
     
     for country, colour in zip(countries, colours):
         data = get_country_data(country, timespan, date)
@@ -67,5 +67,6 @@ def world_tally_plot(countries, colours, date, timespan, scale):
         
         plt.plot(x_data, confirmed, color=colour, marker=".", linestyle="-", label=country)
     
+    plt.legend(loc="best")
     plt.show()
     return
