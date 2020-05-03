@@ -21,7 +21,7 @@ def get_country_data(country, days, date):
         data = csv_processor.parse_data(helper.modify_date(date, -i)).get(country, None)
         if data == None:   
             return
-
+        entries.append(data)
     return entries
 
 def country_tally_plot(country, date, timespan, scale, plot_type):
@@ -39,8 +39,8 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     if data == None:
         print("'{}' is unavailable!".format(country))
         return
-    
-    confirmed = [x[0] for x in data]
+ 
+    confirmed = [x[0] for x in data]  
     deaths = [x[1] for x in data]
     recovered = [x[2] for x in data]
     active = [x[3] for x in data]
@@ -95,7 +95,7 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
     options = {"c" : 0, "d" : 1, "r" : 2, "a" : 3}
     for letter in plot_type:
         if letter in options.keys():
-            chose_option = options[letter]
+            chosen_option = options[letter]
             break          
     if chosen_option == None:
         print("Invalid plot type")
@@ -119,8 +119,18 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
         
         plt.plot(x_data, cases, color=colour, marker=".", linestyle="-", label=country)
     
+    ylabel = "Number of "
+    if chosen_option == 0:
+        ylabel += "confirmed cases"
+    elif chosen_option == 1:
+        ylabel += "deaths"
+    elif chosen_option == 2:
+        ylabel += "recovered cases"
+    else:
+        ylabel += "active cases"
+    
     plt.xlabel("Number of days since the latest report")
-    plt.ylabel("Number of cases")
+    plt.ylabel(ylabel)
     plt.title("COVID-19 tallies over the world")
     plt.legend(loc="best")
     plt.show()
