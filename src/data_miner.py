@@ -49,5 +49,23 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     plt.xlabel("Number of days since the latest report")
     plt.ylabel("Number of cases")
     plt.title("COVID-19 tally for " + country)
-    plt.legend(loc='best')
+    plt.legend(loc="best")
     plt.show()
+    return
+
+def world_tally_plot(countries, colours, date, timespan, scale):
+    plt.xlabel("Number of days since the latest report")
+    plt.ylabel("Number of cases")
+    plt.title("COVID-19 tallies over the world")
+    plt.legend(loc="best")
+    
+    for country, colour in zip(countries, colours):
+        data = get_country_data(country, timespan, date)
+        confirmed = [x[0] for x in data]
+        x_data = np.linspace(-(timespan-1), 0, num=timespan)
+        confirmed = np.array(confirmed)
+        
+        plt.plot(x_data, confirmed, color=colour, marker=".", linestyle="-", label=country)
+    
+    plt.show()
+    return
