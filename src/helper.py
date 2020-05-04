@@ -3,14 +3,7 @@ from os import system, name
 from colorama import Fore, Style
 
 def modify_date(date, n):
-    """
-    Receive a date (format dd-mm-yyyy) and add a number of days into it.
-    Use negative n for substraction.
-    """
-    date = datetime.strptime(date, "%d-%m-%Y")
-    date += timedelta(days=n)
-    return date.strftime("%d-%m-%Y")
-
+    return (datetime.strptime(date, "%d-%m-%Y") + timedelta(days=n)).strftime("%d-%m-%Y")
 def is_valid_date(date):
     if type(date) != str:
         return False
@@ -24,18 +17,15 @@ def is_valid_date(date):
     if not (c[0].isdigit() and c[1].isdigit() and c[2].isdigit()):
         return False
     return True
-
 def clear(): 
     if name == 'nt': 
         _ = system('cls') 
     else: 
         _ = system('clear')
     return True
-
 def print_type_error(obj, expected, given):
     print_error("The expected type of {0} is {1}, but given {2}".format(obj, typeof(expected), typeof(given)))
     return
-
 def print_error(err):
     print("{0}{1}{2}".format(Fore.RED, err, Style.RESET_ALL))
     return
