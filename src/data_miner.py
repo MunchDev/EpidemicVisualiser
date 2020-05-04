@@ -26,87 +26,84 @@ def get_country_data(country, date, days):
         entries.append(data)
     return entries
 
-def country_tally_plot(country, date, timespan, *args, **kwargs):
-    # Check whether provided a single country or a list of countries
-    multiple_countries = False
+def validate_timespan(ts):
+    if type(timespan) != int:
+        t_stderr("timespan", int, timespan)
+        return False
+    if timespan <= 0:
+        stderr("Expected positive timespan, but given {}".format(timespan)) 
+        return False
+    return True
+
+def validate_date(d):
+    if type(date) != str:
+        t_stderr("date", str, date)
+        return False
+    if not helper.is_valid_date(date):
+        stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(date))
+        return False
+    return True
+
+def validate_scale(s):
+    if type(scale) != str:
+        t_stderr("scale", str, scale)
+        return False
+    if scale != "log" and scale != "linear":
+        stderr("Expected value of scale is either 'log' or 'linear', but given {}".format(scale))
+        return False
+    return True
+
+def validate_pltype(p):
+    if type(p) != str:
+        t_stderr("plot_type", str, scale)
+        return False
+    return True
+
+def validate_country(ct):
     if type(country) != str:
         if type(country) == list:
-            multiple_countries = True
+            return True
         else:
             stderr("Expected type of country is <class 'str'> or <class 'list'>, but given {}"\
                    .format(type(country)))
-            return -1 
-        
-    #-----------------------------------------------------------------------------
-    #---------------------Get/validate positional arguments-----------------------
-    #-----------------------------------------------------------------------------
-    if type(date) != str:
-        t_stderr("date", str, date)
-    if not helper.is_valid_date(date):
-        stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(date))
-        return -1
-    
-    if type(timespan) != int:
-        t_stderr("timespan", int, timespan)
-    if timespan == None:
-        timespan = 30
-    if timespan <= 0:
-        stderr("Expected positive timespan, but given {}".format(timespan)) 
-        return -1
-    #-----------------------------------------------------------------------------
-    
-    # If a single country is provided    
-    if not multiple_countries:
-        #----------------------------------------------------------------
-        #-----------------Get/validate keyword arguments-----------------
-        #----------------------------------------------------------------
-        scale = kwargs.get("scale", "log")
-        if scale == None:
-            scale = "log"
-        if scale != "log" and scale != "linear":
-            stderr("Expected scale is either 'log' or 'linear', but given {}".format(scale))
             return -1
-            
+    return False
+
+def country_tally_plot(country, date, timespan, *args, **kwargs):
+    multiple_countries = validate_country(country)
+    if multiple_countries == -1:
+        return -1        
+    if not validate_date(date):
+        return -1    
+    if not validate_timespan(timespan):
+        return -1
+       
+    if not multiple_countries:
+        scale = kwargs.get("scale", "log")
+        if not validate_scale(scale):
+            return -1           
         plot_type = kwargs.get("plot_type", "cdra")
-        if plot_type == None:
-            scale = "cdra"
-        #----------------------------------------------------------------
+        if not validate_pltype(plot_type):
+            return -1
         
-        #---------------------------------------------------------------
-        #-----------------Data retrieval and processing-----------------
-        #---------------------------------------------------------------
         data = get_country_data(country, date, timespan)
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1
- 
-        confirmed = [x[0] for x in data]  
-        deaths = [x[1] for x in data]
-        recovered = [x[2] for x in data]
-        active = [x[3] for x in data]
-
-        x_data = np.linspace(-(timespan-1), 0, num=timespan)
-        confirmed = np.array(confirmed)
-        deaths = np.array(deaths)
-        recovered = np.array(recovered)
-        active = np.array(active)
-        #---------------------------------------------------------------
         
-        #----------------------------------------------------------------
-        #----------------------------Plotting----------------------------
-        #----------------------------------------------------------------
+        x_data = np.linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:
-            plt.plot(x_data, confirmed, '.b-', label="Confirmed")
+            plt.plot(x_data, np.array([x[0] for x in data]), '.b-', label="Confirmed")
             plot_enabled = True
         if "r" in plot_type:
-            plt.plot(x_data, recovered, '.g-', label="Recovered")
+            plt.plot(x_data, np.array([x[1] for x in data]), '.g-', label="Recovered")
             plot_enabled = True
         if "d" in plot_type:
-            plt.plot(x_data, deaths, '.k-', label="Deaths")
+            plt.plot(x_data, np.array([x[2] for x in data]), '.k-', label="Deaths")
             plot_enabled = True
         if "a" in plot_type:
-            plt.plot(x_data, active, '.r-', label="Active")
+            plt.plot(x_data, np.array([x[3] for x in data]), '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
@@ -117,16 +114,10 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         plt.ylabel("Number of cases")
         plt.title("COVID-19 tally for " + country)
         plt.legend(loc="best")
-        plt.show()
-        #----------------------------------------------------------------    
+        plt.show() 
         return 0
-    # If multiple countries is present
     else:
-        #---------------------------------------------------------------------------------
-        #--------------------------Data retrieval and processing--------------------------
-        #---------------------------------------------------------------------------------
-        n = len(country)
-            
+        n = len(country)            
         scale = kwargs.get("scale", ["log"] * n)
         if type(scale) == str:
             scale = [scale] * n
@@ -145,7 +136,6 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
             return -1
         if len(plot_type) < n:
             plot_type += ["log"] * (n - len(scale))
-        #---------------------------------------------------------------------------------
             
         for i in range(n):
             c = country[i]
