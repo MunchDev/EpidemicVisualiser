@@ -33,6 +33,7 @@ def country_tally_plot(country, date, *args, **kwargs):
         else:
             print("Invalid input")
             return -1 
+        
     #-----------------------------------------------------------------------------
     #---------------------Get/validate positional arguments-----------------------
     #-----------------------------------------------------------------------------
@@ -50,16 +51,16 @@ def country_tally_plot(country, date, *args, **kwargs):
         #----------------------------------------------------------------
         timespan = kwargs.get("timespan", 30)
         if timespan == None:
-            timespan == 30
+            timespan = 30
         if timespan <= 0:
-            print("Invalid timespan! Timespan must be positive") 
+            print("Expected positive timespan, but given ", timespan) 
             return -1                                            
         
         scale = kwargs.get("scale", "log")
         if scale == None:
             scale = "log"
         if scale != "log" and scale != "linear":
-            print("Invalid scale")
+            print("Expected scale of either 'log' or 'linear', but given ", scale)
             return -1
             
         plot_type = kwargs.get("plot_type", "cdra")
@@ -104,7 +105,7 @@ def country_tally_plot(country, date, *args, **kwargs):
             plt.plot(x_data, active, '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
-            print("No valid plot type is provided")
+            print("Expected at least one plot type, but given ", plot_type)
             return -1
         
         plt.yscale(scale)
@@ -115,26 +116,33 @@ def country_tally_plot(country, date, *args, **kwargs):
         plt.show()
         #----------------------------------------------------------------    
         return 0
+    # If multiple countries is present
     else:
+        #---------------------------------------------------------------------------------
+        #--------------------------Data retrieval and processing--------------------------
+        #---------------------------------------------------------------------------------
         n = len(country)
-        timespan = kwargs.get("timespan", 30)
-        
+        timespan = kwargs.get("timespan", 30)        
         scale = kwargs.get("scale", ["log"] * n)
         if type(scale) != list:
             print("Expected type of scale is <class \"list\">, but given ", type(scale))
             return -1
         if len(scale) < n:
-            scale += [None] * (n - len(scale))
+            scale += ["log"] * (n - len(scale))
             
         plot_type = kwargs.get("plot_type", ["cdra"] * n)      
         if type(plot_type) != list:
             print("Expected type of scale is <class \"list\">, but given ", type(scale))
             return -1
         if len(plot_type) < n:
-            plot_type += [None] * (n - len(scale))
+            plot_type += ["log"] * (n - len(scale))
+        #---------------------------------------------------------------------------------
             
-        for _country in country:
-            country_tally_plot(_country, date, timespan, scale, plot_type)
+        for i in range(n):
+            c = country[i]
+            s = scale[i]
+            p = plot_type[i]
+            country_tally_plot(c, date, timespan, scale=s, plot_type=p)
         return 0
 
 def world_tally_plot(countries, colours, date, timespan = 30, scale = "log", plot_type = "c"):
