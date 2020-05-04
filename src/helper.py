@@ -37,5 +37,5 @@ def print_type_error(obj, expected, given):
     return
 
 def print_error(err):
-    print("{0}{1}{2}".format(Fore.RED, err, STYLE.RESET_ALL))
+    print("{0}{1}{2}".format(Fore.RED, err, Style.RESET_ALL))
     return
