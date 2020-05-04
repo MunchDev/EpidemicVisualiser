@@ -24,26 +24,52 @@ def get_country_data(country, days, date):
         entries.append(data)
     return entries
 
-def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = "cdra", **kwargs):
+def country_tally_plot(country, date, *args, **kwargs):
+    # Check whether provided a single country or a list of countries
     multiple_countries = False
     if type(country) != str:
         if type(country) == list:
             multiple_countries = True
         else:
             print("Invalid input")
-            return -1
-    if type(date) != str or type(timespan) != int:
-        print("Invalid input")
-        return -1
+            return -1 
+    #-----------------------------------------------------------------------------
+    #---------------------Get/validate positional arguments-----------------------
+    #-----------------------------------------------------------------------------
+    if type(date) != str:
+        print("Expected type of date is <class \"str\", but given ", type(date))
     if not helper.is_valid_date(date):
-        print("Invalid date")
+        print("Expected format for date is 'dd-mm-yyyy', but given ", type(date))
         return -1
-    if timespan <= 0:
-        print("Invalid timespan! Timespan must be positive")
-        return -1
+    #-----------------------------------------------------------------------------
     
+    # If a single country is provided    
     if not multiple_countries:
-        col = kwargs.get("plot", None)       
+        #----------------------------------------------------------------
+        #-----------------Get/validate keyword arguments-----------------
+        #----------------------------------------------------------------
+        timespan = kwargs.get("timespan", 30)
+        if timespan == None:
+            timespan == 30
+        if timespan <= 0:
+            print("Invalid timespan! Timespan must be positive") 
+            return -1                                            
+        
+        scale = kwargs.get("scale", "log")
+        if scale == None:
+            scale = "log"
+        if scale != "log" and scale != "linear":
+            print("Invalid scale")
+            return -1
+            
+        plot_type = kwargs.get("plot_type", "cdra")
+        if plot_type == None:
+            scale = "cdra"
+        #----------------------------------------------------------------
+        
+        #---------------------------------------------------------------
+        #-----------------Data retrieval and processing-----------------
+        #---------------------------------------------------------------
         data = get_country_data(country, timespan, date)
         if data == -1:
             print("'{}' is unavailable!".format(country))
@@ -59,59 +85,56 @@ def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = 
         deaths = np.array(deaths)
         recovered = np.array(recovered)
         active = np.array(active)
-    
-        if scale != "log" and scale != "linear":
-            print("Invalid scale")
-            return -1
-        plt.yscale(scale)
-    
+        #---------------------------------------------------------------
+        
+        #----------------------------------------------------------------
+        #----------------------------Plotting----------------------------
+        #----------------------------------------------------------------
         plot_enabled = False
         if "c" in plot_type:
-            if col:
-                col.plot(x_data, confirmed, '.b-', label="Confirmed")
-            else:
-                plt.plot(x_data, confirmed, '.b-', label="Confirmed")
+            plt.plot(x_data, confirmed, '.b-', label="Confirmed")
             plot_enabled = True
         if "r" in plot_type:
-            if col:
-                col.plot(x_data, recovered, '.g-', label="Recovered")
-            else:    
-                plt.plot(x_data, recovered, '.g-', label="Recovered")
+            plt.plot(x_data, recovered, '.g-', label="Recovered")
             plot_enabled = True
         if "d" in plot_type:
-            if col:
-                col.plot(x_data, deaths, '.k-', label="Deaths")
-            else:
-                plt.plot(x_data, deaths, '.k-', label="Deaths")
+            plt.plot(x_data, deaths, '.k-', label="Deaths")
             plot_enabled = True
         if "a" in plot_type:
-            if col:
-                col.plot(x_data, active, '.r-', label="Active")
-            else:
-                plt.plot(x_data, active, '.r-', label="Active")
-            plot_enabled = True
-    
+            plt.plot(x_data, active, '.r-', label="Active")
+            plot_enabled = True  
         if not plot_enabled:
             print("No valid plot type is provided")
-            return -1       
-        if col:
-            col.xlabel("Number of days since the latest report")
-            col.ylabel("Number of cases")
-            col.title("COVID-19 tally for " + country)
-            col.legend(loc="best")
-        else:
-            plt.xlabel("Number of days since the latest report")
-            plt.ylabel("Number of cases")
-            plt.title("COVID-19 tally for " + country)
-            plt.legend(loc="best")
-            plt.show()       
+            return -1
+        
+        plt.yscale(scale)
+        plt.xlabel("Number of days since the latest report")
+        plt.ylabel("Number of cases")
+        plt.title("COVID-19 tally for " + country)
+        plt.legend(loc="best")
+        plt.show()
+        #----------------------------------------------------------------    
         return 0
     else:
-        fig, ax = plt.subplots(nrows=len(countries), ncols=1)
-        for row, _country in zip(ax, country):
-            for col in row:
-                country_tally_plot(_country, date, timespan, scale, plot_type, multiple_countries=True, plot=col)
-        plt.show()
+        n = len(country)
+        timespan = kwargs.get("timespan", 30)
+        
+        scale = kwargs.get("scale", ["log"] * n)
+        if type(scale) != list:
+            print("Expected type of scale is <class \"list\">, but given ", type(scale))
+            return -1
+        if len(scale) < n:
+            scale += [None] * (n - len(scale))
+            
+        plot_type = kwargs.get("plot_type", ["cdra"] * n)      
+        if type(plot_type) != list:
+            print("Expected type of scale is <class \"list\">, but given ", type(scale))
+            return -1
+        if len(plot_type) < n:
+            plot_type += [None] * (n - len(scale))
+            
+        for _country in country:
+            country_tally_plot(_country, date, timespan, scale, plot_type)
         return 0
 
 def world_tally_plot(countries, colours, date, timespan = 30, scale = "log", plot_type = "c"):
