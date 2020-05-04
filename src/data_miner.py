@@ -1,25 +1,19 @@
-import csv_processor
-import helper
+from csv_processor import parse_data
+from helper import modify_date, clear
 from helper import print_type_error as t_stderr
 from helper import print_error as stderr
-import datetime
 import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-f = open("../cache/population.json")
-population = json.load(f)
-f.close()
-
 def _get_country_data(country, date, days):  
     entries = []
     for i in range(days-1, -1, -1):
-        data = csv_processor.parse_data(helper.modify_date(date, -i)).get(country, None)
+        data = parse_data(modify_date(date, -i)).get(country, None)
         if data == None:   
             return -1
         entries.append(data)
     return entries
-
 def _validate_timespan(ts):
     if type(ts) != int:
         t_stderr("timespan", int, ts)
@@ -28,7 +22,6 @@ def _validate_timespan(ts):
         stderr("Expected positive timespan, but given {}".format(ts)) 
         return False
     return True
-
 def _validate_date(d):
     if type(d) != str:
         t_stderr("date", str, d)
@@ -37,7 +30,6 @@ def _validate_date(d):
         stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(d))
         return False
     return True
-
 def _validate_scale(s):
     if type(s) != str:
         t_stderr("scale", str, s)
@@ -46,13 +38,11 @@ def _validate_scale(s):
         stderr("Expected value of scale is either 'log' or 'linear', but given {}".format(s))
         return False
     return True
-
 def _validate_pltype(p):
     if type(p) != str:
         t_stderr("plot_type", str, p)
         return False
     return True
-
 def _validate_country(ct):
     if type(ct) != str:
         if type(ct) == list:
@@ -62,7 +52,22 @@ def _validate_country(ct):
                    .format(type(country)))
             return -1
     return False
-
+def _transpose_plot(countries, date, timespan, scale, plot_type): 
+    for country in countries:
+        data = _get_country_data(country, date, timespan)
+        if data == -1:
+            stderr("'{}' is unavailable!".format(country))
+            return -1       
+        x_data = np.linspace(-(timespan-1), 0, num=timespan)        
+        plt.plot(x_data, np.array([x[plot_type] for x in data]), ".-", label=country)   
+    ylabel = "Number of " + {"confirmed cases", "deaths", "recovered cases", "active cases"}[plot_type]    
+    plt.yscale(scale)
+    plt.xlabel("Number of days since the latest report")
+    plt.ylabel(ylabel)
+    plt.title(ylabel + " over the world")
+    plt.legend(loc="best")
+    plt.show()
+    return 0
 def plot_tally(country, date, timespan, *args, **kwargs):
     multiple_countries = _validate_country(country)
     if multiple_countries == -1:
@@ -70,23 +75,18 @@ def plot_tally(country, date, timespan, *args, **kwargs):
     if not _validate_date(date):
         return -1    
     if not _validate_timespan(timespan):
-        return -1
-       
-    transpose = kwargs.get("transpose", False)
-        
+        return -1 
     if not multiple_countries:
         scale = kwargs.get("scale", "log")
         if not _validate_scale(scale):
             return -1           
         plot_type = kwargs.get("plot_type", "cdra")
         if not _validate_pltype(plot_type):
-            return -1
-        
+            return -1 
         data = _get_country_data(country, date, timespan)
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
-            return -1
-        
+            return -1   
         x_data = np.linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:
@@ -103,8 +103,7 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
-            return -1
-        
+            return -1      
         plt.yscale(scale)
         plt.xlabel("Number of days since the latest report")
         plt.ylabel("Number of cases")
@@ -112,7 +111,7 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         plt.legend(loc="best")
         plt.show() 
         return 0
-    elif transpose:      
+    elif kwargs.get("transpose", False):      
         plot_type = kwargs.get("plot_type", "cdra")
         if not _validate_pltype(plot_type):
             return -1
@@ -151,8 +150,7 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             t_stderr("scale", list, scale)
             return -1
         if len(scale) < n:
-            scale += ["log"] * (n - len(scale))
-            
+            scale += ["log"] * (n - len(scale))          
         plot_type = kwargs.get("plot_type", ["cdra"] * n)
         if type(plot_type) == str:
             plot_type = [plot_type] * n
@@ -161,40 +159,8 @@ def plot_tally(country, date, timespan, *args, **kwargs):
                    .format(type(plot_type)))
             return -1
         if len(plot_type) < n:
-            plot_type += ["log"] * (n - len(scale))
-            
-        for i in range(n):
-            c = country[i]
-            s = scale[i]
-            p = plot_type[i]
-            plot_tally(c, date, timespan, scale=s, plot_type=p)
-        return 0
-
-def _transpose_plot(countries, date, timespan, scale, plot_type): 
-    for country in countries:
-        data = _get_country_data(country, date, timespan)
-        if data == -1:
-            stderr("'{}' is unavailable!".format(country))
-            return -1       
-        x_data = np.linspace(-(timespan-1), 0, num=timespan)        
-        plt.plot(x_data, np.array([x[plot_type] for x in data]), ".-", label=country)
-    
-    ylabel = "Number of "
-    if plot_type == 0:
-        ylabel += "confirmed cases"
-    elif plot_type == 1:
-        ylabel += "deaths"
-    elif plot_type == 2:
-        ylabel += "recovered cases"
-    else:
-        ylabel += "active cases"
-    
-    plt.yscale(scale)
-    plt.xlabel("Number of days since the latest report")
-    plt.ylabel(ylabel)
-    plt.title(ylabel + " over the world")
-    plt.legend(loc="best")
-    plt.show()
-    return 0
-
+            plot_type += ["log"] * (n - len(scale))           
+        for i in range(n):            
+            plot_tally(country[i], date, timespan, scale=scale[i], plot_type=plot_type[i])
+        return 0  
 __all__ = [plot_tally]
