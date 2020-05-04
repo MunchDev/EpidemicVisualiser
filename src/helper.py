@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from os import system, name
 
 def modify_date(date, n):
     """
@@ -21,4 +22,11 @@ def is_valid_date(date):
         return False
     if not (c[0].isdigit() and c[1].isdigit() and c[2].isdigit()):
         return False
+    return True
+
+def clear(): 
+    if name == 'nt': 
+        _ = system('cls') 
+    else: 
+        _ = system('clear')
     return True
