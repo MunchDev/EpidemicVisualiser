@@ -24,8 +24,15 @@ def get_country_data(country, days, date):
         entries.append(data)
     return entries
 
-def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = "cdra"):
-    if type(country) != str or type(date) != str or type(timespan) != int:
+def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = "cdra", **kwargs):
+    multiple_countries = False
+    if type(country) != str:
+        if type(country) == list:
+            multiple_countries = True
+        else:
+            print("Invalid input")
+            return -1
+    if type(date) != str or type(timespan) != int:
         print("Invalid input")
         return -1
     if not helper.is_valid_date(date):
@@ -35,51 +42,77 @@ def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = 
         print("Invalid timespan! Timespan must be positive")
         return -1
     
-    data = get_country_data(country, timespan, date)
-    if data == -1:
-        print("'{}' is unavailable!".format(country))
-        return -1
+    if not multiple_countries:
+        col = kwargs.get("plot", None)       
+        data = get_country_data(country, timespan, date)
+        if data == -1:
+            print("'{}' is unavailable!".format(country))
+            return -1
  
-    confirmed = [x[0] for x in data]  
-    deaths = [x[1] for x in data]
-    recovered = [x[2] for x in data]
-    active = [x[3] for x in data]
+        confirmed = [x[0] for x in data]  
+        deaths = [x[1] for x in data]
+        recovered = [x[2] for x in data]
+        active = [x[3] for x in data]
 
-    x_data = np.linspace(-(timespan-1), 0, num=timespan)
-    confirmed = np.array(confirmed)
-    deaths = np.array(deaths)
-    recovered = np.array(recovered)
-    active = np.array(active)
-
-    if scale != "log" and scale != "linear":
-        print("Invalid scale")
-        return -1
-    plt.yscale(scale)
+        x_data = np.linspace(-(timespan-1), 0, num=timespan)
+        confirmed = np.array(confirmed)
+        deaths = np.array(deaths)
+        recovered = np.array(recovered)
+        active = np.array(active)
     
-    plot_enabled = False
-    if "c" in plot_type:
-        plt.plot(x_data, confirmed, '.b-', label="Confirmed")
-        plot_enabled = True
-    if "r" in plot_type:
-        plt.plot(x_data, recovered, '.g-', label="Recovered")
-        plot_enabled = True
-    if "d" in plot_type:
-        plt.plot(x_data, deaths, '.k-', label="Deaths")
-        plot_enabled = True
-    if "a" in plot_type:
-        plt.plot(x_data, active, '.r-', label="Active")
-        plot_enabled = True
+        if scale != "log" and scale != "linear":
+            print("Invalid scale")
+            return -1
+        plt.yscale(scale)
     
-    if not plot_enabled:
-        print("No valid plot type is provided")
-        return -1
-
-    plt.xlabel("Number of days since the latest report")
-    plt.ylabel("Number of cases")
-    plt.title("COVID-19 tally for " + country)
-    plt.legend(loc="best")
-    plt.show()
-    return 0
+        plot_enabled = False
+        if "c" in plot_type:
+            if col:
+                col.plot(x_data, confirmed, '.b-', label="Confirmed")
+            else:
+                plt.plot(x_data, confirmed, '.b-', label="Confirmed")
+            plot_enabled = True
+        if "r" in plot_type:
+            if col:
+                col.plot(x_data, recovered, '.g-', label="Recovered")
+            else:    
+                plt.plot(x_data, recovered, '.g-', label="Recovered")
+            plot_enabled = True
+        if "d" in plot_type:
+            if col:
+                col.plot(x_data, deaths, '.k-', label="Deaths")
+            else:
+                plt.plot(x_data, deaths, '.k-', label="Deaths")
+            plot_enabled = True
+        if "a" in plot_type:
+            if col:
+                col.plot(x_data, active, '.r-', label="Active")
+            else:
+                plt.plot(x_data, active, '.r-', label="Active")
+            plot_enabled = True
+    
+        if not plot_enabled:
+            print("No valid plot type is provided")
+            return -1       
+        if col:
+            col.xlabel("Number of days since the latest report")
+            col.ylabel("Number of cases")
+            col.title("COVID-19 tally for " + country)
+            col.legend(loc="best")
+        else:
+            plt.xlabel("Number of days since the latest report")
+            plt.ylabel("Number of cases")
+            plt.title("COVID-19 tally for " + country)
+            plt.legend(loc="best")
+            plt.show()       
+        return 0
+    else:
+        fig, ax = plt.subplots(nrows=len(countries), ncols=1)
+        for row, _country in zip(ax, country):
+            for col in row:
+                country_tally_plot(_country, date, timespan, scale, plot_type, multiple_countries=True, plot=col)
+        plt.show()
+        return 0
 
 def world_tally_plot(countries, colours, date, timespan = 30, scale = "log", plot_type = "c"):
     if type(countries) != list or type(colours) != list or type(date) != str or type(timespan) != int:
