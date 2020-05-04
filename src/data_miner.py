@@ -24,7 +24,7 @@ def get_country_data(country, days, date):
         entries.append(data)
     return entries
 
-def country_tally_plot(country, date, timespan, scale, plot_type):
+def country_tally_plot(country, date, timespan = 30, scale = "log", plot_type = "cdra"):
     if type(country) != str or type(date) != str or type(timespan) != int:
         print("Invalid input")
         return -1
@@ -81,7 +81,7 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     plt.show()
     return 0
 
-def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
+def world_tally_plot(countries, colours, date, timespan = 30, scale = "log", plot_type = "c"):
     if type(countries) != list or type(colours) != list or type(date) != str or type(timespan) != int:
         print("Invalid input type")
         return -1
