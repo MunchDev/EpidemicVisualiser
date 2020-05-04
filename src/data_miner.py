@@ -2,9 +2,8 @@ from csv_processor import parse_data
 from helper import modify_date, clear
 from helper import print_type_error as t_stderr
 from helper import print_error as stderr
-import json
-import numpy as np
-import matplotlib.pyplot as plt
+from numpy import array, linspace
+from matplotlib import pyplot as plt
 
 def _get_country_data(country, date, days):  
     entries = []
@@ -58,8 +57,8 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1       
-        x_data = np.linspace(-(timespan-1), 0, num=timespan)        
-        plt.plot(x_data, np.array([x[plot_type] for x in data]), ".-", label=country)   
+        x_data = linspace(-(timespan-1), 0, num=timespan)        
+        plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
     ylabel = "Number of " + {"confirmed cases", "deaths", "recovered cases", "active cases"}[plot_type]    
     plt.yscale(scale)
     plt.xlabel("Number of days since the latest report")
@@ -87,19 +86,19 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1   
-        x_data = np.linspace(-(timespan-1), 0, num=timespan)       
+        x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:
-            plt.plot(x_data, np.array([x[0] for x in data]), '.b-', label="Confirmed")
+            plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
             plot_enabled = True
         if "r" in plot_type:
-            plt.plot(x_data, np.array([x[1] for x in data]), '.g-', label="Recovered")
+            plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
             plot_enabled = True
         if "d" in plot_type:
-            plt.plot(x_data, np.array([x[2] for x in data]), '.k-', label="Deaths")
+            plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
             plot_enabled = True
         if "a" in plot_type:
-            plt.plot(x_data, np.array([x[3] for x in data]), '.r-', label="Active")
+            plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
