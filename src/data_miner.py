@@ -27,41 +27,41 @@ def get_country_data(country, date, days):
     return entries
 
 def validate_timespan(ts):
-    if type(timespan) != int:
-        t_stderr("timespan", int, timespan)
+    if type(ts) != int:
+        t_stderr("timespan", int, ts)
         return False
-    if timespan <= 0:
-        stderr("Expected positive timespan, but given {}".format(timespan)) 
+    if ts <= 0:
+        stderr("Expected positive timespan, but given {}".format(ts)) 
         return False
     return True
 
 def validate_date(d):
-    if type(date) != str:
-        t_stderr("date", str, date)
+    if type(d) != str:
+        t_stderr("date", str, d)
         return False
-    if not helper.is_valid_date(date):
-        stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(date))
+    if not helper.is_valid_date(d):
+        stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(d))
         return False
     return True
 
 def validate_scale(s):
-    if type(scale) != str:
-        t_stderr("scale", str, scale)
+    if type(s) != str:
+        t_stderr("scale", str, s)
         return False
-    if scale != "log" and scale != "linear":
-        stderr("Expected value of scale is either 'log' or 'linear', but given {}".format(scale))
+    if s != "log" and s != "linear":
+        stderr("Expected value of scale is either 'log' or 'linear', but given {}".format(s))
         return False
     return True
 
 def validate_pltype(p):
     if type(p) != str:
-        t_stderr("plot_type", str, scale)
+        t_stderr("plot_type", str, p)
         return False
     return True
 
 def validate_country(ct):
-    if type(country) != str:
-        if type(country) == list:
+    if type(ct) != str:
+        if type(ct) == list:
             return True
         else:
             stderr("Expected type of country is <class 'str'> or <class 'list'>, but given {}"\
