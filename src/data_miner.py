@@ -1,5 +1,5 @@
 from csv_processor import parse_data
-from helper import modify_date, clear
+from helper import modify_date, clear, is_valid_date
 from helper import print_type_error as t_stderr
 from helper import print_error as stderr
 from numpy import array, linspace
@@ -25,7 +25,7 @@ def _validate_date(d):
     if type(d) != str:
         t_stderr("date", str, d)
         return False
-    if not helper.is_valid_date(d):
+    if not is_valid_date(d):
         stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(d))
         return False
     return True
@@ -59,7 +59,7 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
             return -1       
         x_data = linspace(-(timespan-1), 0, num=timespan)        
         plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
-    ylabel = "Number of " + {"confirmed cases", "deaths", "recovered cases", "active cases"}[plot_type]    
+    ylabel = "Number of " + ["confirmed cases", "deaths", "recovered cases", "active cases"][plot_type]    
     plt.yscale(scale)
     plt.xlabel("Number of days since the latest report")
     plt.ylabel(ylabel)
