@@ -1,5 +1,7 @@
 import csv_processor
 import helper
+from helper import print_type_error as t_stderr
+from helper import print_error as stderr
 import datetime
 import json
 import numpy as np
@@ -31,25 +33,25 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         if type(country) == list:
             multiple_countries = True
         else:
-            print("Invalid input")
+            stderr("Expected type of country is <class 'str'> or <class 'list'>, but given {}"\
+                   .format(type(country)))
             return -1 
         
     #-----------------------------------------------------------------------------
     #---------------------Get/validate positional arguments-----------------------
     #-----------------------------------------------------------------------------
     if type(date) != str:
-        print("Expected date is of <class \"str\", but given ", type(date))
+        t_stderr("date", str, date)
     if not helper.is_valid_date(date):
-        print("Expected format for date is 'dd-mm-yyyy', but given ", type(date))
+        stderr("Expected format for date is 'dd-mm-yyyy', but given {}".format(date))
         return -1
     
-    timespan = kwargs.get("timespan", 30)
     if type(timespan) != int:
-        print("Expected timespan is of <class 'int'>, but given ", type(timespan))
+        t_stderr("timespan", int, timespan)
     if timespan == None:
         timespan = 30
     if timespan <= 0:
-        print("Expected positive timespan, but given ", timespan) 
+        stderr("Expected positive timespan, but given {}".format(timespan)) 
         return -1
     #-----------------------------------------------------------------------------
     
@@ -62,7 +64,7 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         if scale == None:
             scale = "log"
         if scale != "log" and scale != "linear":
-            print("Expected scale is either 'log' or 'linear', but given ", scale)
+            stderr("Expected scale is either 'log' or 'linear', but given {}".format(scale))
             return -1
             
         plot_type = kwargs.get("plot_type", "cdra")
@@ -75,7 +77,7 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         #---------------------------------------------------------------
         data = get_country_data(country, date, timespan)
         if data == -1:
-            print("'{}' is unavailable!".format(country))
+            stderr("'{}' is unavailable!".format(country))
             return -1
  
         confirmed = [x[0] for x in data]  
@@ -107,7 +109,7 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
             plt.plot(x_data, active, '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
-            print("Expected at least one plot type, but given ", plot_type)
+            stderr("Expected at least one plot type, but given '{}'".format(plot_type))
             return -1
         
         plt.yscale(scale)
@@ -129,7 +131,7 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         if type(scale) == str:
             scale = [scale] * n
         if type(scale) != list:
-            print("Expected scale is of <class 'list'> or <class 'str'>, but given ", type(scale))
+            t_stderr("scale", list, scale)
             return -1
         if len(scale) < n:
             scale += ["log"] * (n - len(scale))
@@ -138,7 +140,8 @@ def country_tally_plot(country, date, timespan, *args, **kwargs):
         if type(plot_type) == str:
             plot_type = [plot_type] * n
         elif type(plot_type) != list:
-            print("Expected plot type is of <class 'list'> or <class 'str'>, but given ", type(scale))
+            stderr("Expected plot type is of <class 'list'> or <class 'str'>, but given {}"\
+                   .format(type(plot_type)))
             return -1
         if len(plot_type) < n:
             plot_type += ["log"] * (n - len(scale))
