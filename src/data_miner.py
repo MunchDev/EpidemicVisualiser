@@ -20,25 +20,25 @@ def get_country_data(country, days, date):
     for i in range(days-1, -1, -1):
         data = csv_processor.parse_data(helper.modify_date(date, -i)).get(country, None)
         if data == None:   
-            return
+            return -1
         entries.append(data)
     return entries
 
 def country_tally_plot(country, date, timespan, scale, plot_type):
     if type(country) != str or type(date) != str or type(timespan) != int:
         print("Invalid input")
-        return
+        return -1
     if not helper.is_valid_date(date):
         print("Invalid date")
-        return
+        return -1
     if timespan <= 0:
         print("Invalid timespan! Timespan must be positive")
-        return
+        return -1
     
     data = get_country_data(country, timespan, date)
-    if data == None:
+    if data == -1:
         print("'{}' is unavailable!".format(country))
-        return
+        return -1
  
     confirmed = [x[0] for x in data]  
     deaths = [x[1] for x in data]
@@ -53,7 +53,7 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
 
     if scale != "log" and scale != "linear":
         print("Invalid scale")
-        return
+        return -1
     plt.yscale(scale)
     
     plot_enabled = False
@@ -72,23 +72,23 @@ def country_tally_plot(country, date, timespan, scale, plot_type):
     
     if not plot_enabled:
         print("No valid plot type is provided")
-        return
+        return -1
 
     plt.xlabel("Number of days since the latest report")
     plt.ylabel("Number of cases")
     plt.title("COVID-19 tally for " + country)
     plt.legend(loc="best")
     plt.show()
-    return
+    return 0
 
 def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
     if type(countries) != list or type(colours) != list or type(date) != str or type(timespan) != int:
         print("Invalid input type")
-        return
+        return -1
     
     if scale != "log" and scale != "linear":
         print("Invalid scale")
-        return
+        return -1
     plt.yscale(scale)
     
     chosen_option = None
@@ -99,19 +99,19 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
             break          
     if chosen_option == None:
         print("Invalid plot type")
-        return
+        return -1
     
     if not helper.is_valid_date(date):
         print("Invalid date")
-        return
+        return -1
     if timespan <= 0:
         print("Invalid timespan! Timespan must be positive")
-        return 
+        return -1
     for country, colour in zip(countries, colours):
         data = get_country_data(country, timespan, date)
-        if data == None:
+        if data == -1:
             print("'{}' is unavailable!".format(country))
-            return
+            return -1
         
         cases = [x[chosen_option] for x in data]
         x_data = np.linspace(-(timespan-1), 0, num=timespan)
@@ -134,4 +134,4 @@ def world_tally_plot(countries, colours, date, timespan, scale, plot_type):
     plt.title("COVID-19 tallies over the world")
     plt.legend(loc="best")
     plt.show()
-    return
+    return 0
