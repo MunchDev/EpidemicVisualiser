@@ -17,7 +17,7 @@ def fetch_data(date):
 def parse_data(date):
     filename = "../cache/" + "".join(date.split("-")) + ".json"
     if isfile(filename):
-        wite open(filename) as f:
+        with open(filename) as f:
             return load(f)	
     data = fetch_data(date).pop(0)
     data_set = dict()
