@@ -9,7 +9,7 @@ f = open("../cache/population.json")
 population = json.load(f)
 f.close()
 
-def get_country_data(country, days, date):
+def get_country_data(country, date, days):
     """
     Get data for <country> within the last <days> ago, from the <date>.
     Data is endexed so that the most recent entry is at the end of the list.
@@ -71,7 +71,7 @@ def country_tally_plot(country, date, *args, **kwargs):
         #---------------------------------------------------------------
         #-----------------Data retrieval and processing-----------------
         #---------------------------------------------------------------
-        data = get_country_data(country, timespan, date)
+        data = get_country_data(country, date, timespan)
         if data == -1:
             print("'{}' is unavailable!".format(country))
             return -1
@@ -172,7 +172,7 @@ def world_tally_plot(countries, colours, date, timespan = 30, scale = "log", plo
         print("Invalid timespan! Timespan must be positive")
         return -1
     for country, colour in zip(countries, colours):
-        data = get_country_data(country, timespan, date)
+        data = get_country_data(country, date, timespan)
         if data == -1:
             print("'{}' is unavailable!".format(country))
             return -1
