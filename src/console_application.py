@@ -9,7 +9,7 @@ try:
         population = json.load(f)
     if population == None or len(population) == 0:
         stderr("Unable to load population! Aborting...")
-        input("Press Enter to continue..."
+        input("Press Enter to continue...")
         raise RuntimeError("Unable to load population!")
 except:
     exit(-1)
@@ -17,10 +17,38 @@ except:
 def main():
     welcome_options = [
         "Show country tally plot",
-        "Show world tally plot",
+        "Show world tally plot"
     ]
     option = welcome_screen_option(welcome_options)
-    return 0    
+    return 0
+
+def ct_plot():
+    def get_ct():
+        countries = []
+        flag = False
+        while True:
+            clear()
+            print("Step 1: Choose the countries you want to plot")
+            # TODO: Add instruction here, same as in the notebooks.
+            print("Leave empty to proceed to Step 2.\n")
+            if flag:
+                print("Country name is invalid! Try again.\n")
+            ct = input("Enter country name > ")
+            flag = False
+            if ct == "":
+                if len(countries) == 0:
+                    clear()
+                    print("You did not enter any valid country! Please enter at least one.")
+                    input("Press Enter to go back to try again")
+                else:
+                    clear()
+                    break
+            elif ct not in population.keys():
+                flag = True
+            else:
+                countries.append(ct)
+        clear()
+        return countries    
 
 def welcome_screen_option(options):
     i = None
