@@ -1,11 +1,10 @@
-from data_miner import *
-from helper import *
+from data_miner import plot_tally
+from helper import clear
 
 def main():
     welcome_options = [
         "Show country tally plot",
         "Show world tally plot",
-        "Show statistics"
     ]
     option = welcome_screen_option(welcome_options)
     return 0
