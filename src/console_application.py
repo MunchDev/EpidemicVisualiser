@@ -39,7 +39,7 @@ def ct_plot():
                 if len(countries) == 0:
                     clear()
                     print("You did not enter any valid country! Please enter at least one.")
-                    input("Press Enter to go back to try again")
+                    input("Press Enter to go back and try again")
                 else:
                     break
             elif ct not in population.keys():
@@ -79,6 +79,34 @@ def ct_plot():
                     break
             flag = True
         return ts
+    def get_scale():
+        scale = []
+        flag = False
+        while True:
+            clear()
+            print("Step 4: Choose the scale you will be using")
+            # TODO: Add instruction here, same as in the notebooks.
+            print("Leave empty to proceed to Step 5.\n")
+            if flag:
+                print("Scale is invalid! Try again.\n")
+            s = input("Enter scale name('log' or 'linear') > ")
+            flag = False
+            if ct == "":
+                if len(scale) == 0:
+                    clear()
+                    print("You did not enter any valid timespan! Please enter at least one.")
+                    input("Press Enter to go back and try again")
+                if len(scale) == 1:
+                    scale = scale[0]
+                    break
+                else:
+                    break
+            elif ct != "log" and ct != "linear":
+                flag = True
+            else:
+                scale.append(s)
+        clear()
+        return scale
 def welcome_screen_option(options):
     i = None
     while True:
