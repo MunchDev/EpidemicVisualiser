@@ -56,6 +56,10 @@ _Return value_: Returns 0 if no errors occured and -1 if at least one error occu
 * _scale_: A string or a list of string. Each string is either "log" or "linear, indicating the type of y-scale of the country to be plotted. Default is "log".
 * _plot_type_: A string or a list of string. Each string consists of letter (c)onfirmed cases, (d)eaths, (r)ecovered cases and (a)ctive cases, indicating the type of plot to be drawn. 
 
+##### For list of supported countries:
+
+[Click HERE](https://github.com/MunchDev/EpidemicSimulator/blob/dev-country/cache/countries.json)
+
 [bd-master-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/master?filepath=src%2Ftally_visualiser.ipynb
 [bd-rc-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/rc?filepath=src%2Ftally_visualiser.ipynb
 [bd-dev-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/dev?filepath=src%2Ftally_visualiser.ipynb
