@@ -20,6 +20,9 @@ def _validate_timespan(ts):
     if ts <= 0:
         stderr("Expected positive timespan, but given {}".format(ts)) 
         return False
+    if ts > 0x7fffffff:
+        stderr("Expected a 32-bit integer, but given {}".format(ts))
+        return False
     return True
 def _validate_date(d):
     if type(d) != str:
