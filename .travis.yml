@@ -17,4 +17,3 @@ jobs:
 install: 
   - pip3 install --upgrade pip
   - pip3 install -r "requirements.txt"
-script: python3 my_app.py || python my_app.py
