@@ -61,12 +61,13 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
         if not _test_flag:
             plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
     ylabel = "Number of " + ["confirmed cases", "deaths", "recovered cases", "active cases"][plot_type]    
-    plt.yscale(scale)
-    plt.xlabel("Number of days since the latest report")
-    plt.ylabel(ylabel)
-    plt.title(ylabel + " over the world")
-    plt.legend(loc="best")
-    plt.show()
+    if not _test_flag:
+        plt.yscale(scale)
+        plt.xlabel("Number of days since the latest report")
+        plt.ylabel(ylabel)
+        plt.title(ylabel + " over the world")
+        plt.legend(loc="best")
+        plt.show()
     return 0
 def plot_tally(country, date, timespan, *args, **kwargs):
     global _test_flag
@@ -91,27 +92,27 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             return -1   
         x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
-        if "c" in plot_type:
-            plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
-            plot_enabled = True
-        if "r" in plot_type:
-            plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
-            plot_enabled = True
-        if "d" in plot_type:
-            plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
-            plot_enabled = True
-        if "a" in plot_type:
-            plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
-            plot_enabled = True  
-        if not plot_enabled:
-            stderr("Expected at least one plot type, but given '{}'".format(plot_type))
-            return -1      
-        plt.yscale(scale)
-        plt.xlabel("Number of days since the latest report")
-        plt.ylabel("Number of cases")
-        plt.title("COVID-19 tally for " + country)
-        plt.legend(loc="best")
         if not _test_flag:
+            if "c" in plot_type:
+                plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
+                plot_enabled = True
+            if "r" in plot_type:
+                plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
+                plot_enabled = True
+            if "d" in plot_type:
+                plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
+                plot_enabled = True
+            if "a" in plot_type:
+                plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
+                plot_enabled = True  
+            if not plot_enabled:
+                stderr("Expected at least one plot type, but given '{}'".format(plot_type))
+                return -1      
+            plt.yscale(scale)
+            plt.xlabel("Number of days since the latest report")
+            plt.ylabel("Number of cases")
+            plt.title("COVID-19 tally for " + country)
+            plt.legend(loc="best")
             plt.show() 
         return 0
     elif kwargs.get("transpose", False):      
