@@ -1,5 +1,5 @@
 from data_miner import plot_tally
-from helper import clear
+from helper import clear, is_valid_date
 from helper import print_error as stderr
 from json import load
 
@@ -41,15 +41,29 @@ def ct_plot():
                     print("You did not enter any valid country! Please enter at least one.")
                     input("Press Enter to go back to try again")
                 else:
-                    clear()
                     break
             elif ct not in population.keys():
                 flag = True
             else:
                 countries.append(ct)
         clear()
-        return countries    
-
+        return countries
+    def get_date():
+        date = None
+        flag = False
+        while True:
+            clear()
+            print("Step 2: Choose a date")
+            # TODO: Add instruction here, same as in the notebooks.
+            if flag:
+                print("\nDate is invalid! Try again.\n")
+            date = input("Enter date > ")
+            if is_valid_date(date):
+                break
+            else:
+                flag = True
+        return date
+            
 def welcome_screen_option(options):
     i = None
     while True:
