@@ -22,7 +22,7 @@ def main():
     option = welcome_screen_option(welcome_options)
     return 0
 
-def ct_plot():
+def ct_plot(t=False):
     def get_ct():
         countries = []
         flag = False
@@ -135,6 +135,17 @@ def ct_plot():
                 pltype.append(p)
         clear()
         return pltype
+    data = {"c":get_ct(), "d":get_date(), "t":get_ts(), "s":get_scale(), "p":get_pltype()}
+    opt = "invalid"
+    while opt == "invalid:
+        p = input("Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
+        opt = {"c":get_ct, "d":get_date, "t":get_ts, "s":get_scale, "p":get_pltype}.get(p, "invalid")
+        if p == "o":
+            break
+        if type(opt) != str:
+            data[p] = opt()
+    plot_tally(data["c"], data["d"], data["t"], scale=data["s"], plot_type=data["p"], transpose=t)
+    return 0
 def welcome_screen_option(options):
     i = None
     while True:
