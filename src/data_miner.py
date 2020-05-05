@@ -111,7 +111,7 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         plt.ylabel("Number of cases")
         plt.title("COVID-19 tally for " + country)
         plt.legend(loc="best")
-        if not test_flag:
+        if not _test_flag:
             plt.show() 
         return 0
     elif kwargs.get("transpose", False):      
