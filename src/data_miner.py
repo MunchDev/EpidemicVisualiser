@@ -66,7 +66,7 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
     plt.yscale(scale)
     plt.xlabel("Number of days since the latest report")
     plt.ylabel(ylabel)
-    plt.title(ylabel + " over the world")
+    plt.title(ylabel + " in selected countries")
     plt.legend(loc="best")
     plt.show()
     return 0
@@ -94,11 +94,11 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         if "c" in plot_type:
             plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
             plot_enabled = True
-        if "r" in plot_type:
-            plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
-            plot_enabled = True
         if "d" in plot_type:
-            plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
+            plt.plot(x_data, array([x[1] for x in data]), '.k-', label="Deaths")
+            plot_enabled = True
+        if "r" in plot_type:
+            plt.plot(x_data, array([x[2] for x in data]), '.g-', label="Recovered")
             plot_enabled = True
         if "a" in plot_type:
             plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
@@ -130,10 +130,10 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         if "c" in plot_type:
             _transpose_plot(country, date, timespan, scale[0], 0)
             plot_enabled = True
-        if "r" in plot_type:
+        if "d" in plot_type:
             _transpose_plot(country, date, timespan, scale[1], 1)
             plot_enabled = True
-        if "d" in plot_type:
+        if "r" in plot_type:
             _transpose_plot(country, date, timespan, scale[2], 2)
             plot_enabled = True
         if "a" in plot_type:
