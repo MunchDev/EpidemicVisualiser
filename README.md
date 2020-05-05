@@ -58,7 +58,7 @@ _Return value_: Returns 0 if no errors occured and -1 if at least one error occu
 
 ##### For list of supported countries:
 
-[a link](https://github.com/MunchDev/EpidemicSimulator/blob/dev-country/cache/countries.json)
+[Click HERE](https://github.com/MunchDev/EpidemicSimulator/blob/dev-country/cache/countries.json)
 
 [bd-master-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/master?filepath=src%2Ftally_visualiser.ipynb
 [bd-rc-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/rc?filepath=src%2Ftally_visualiser.ipynb
