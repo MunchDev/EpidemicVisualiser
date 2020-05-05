@@ -56,6 +56,199 @@ _Return value_: Returns 0 if no errors occured and -1 if at least one error occu
 * _scale_: A string or a list of string. Each string is either "log" or "linear, indicating the type of y-scale of the country to be plotted. Default is "log".
 * _plot_type_: A string or a list of string. Each string consists of letter (c)onfirmed cases, (d)eaths, (r)ecovered cases and (a)ctive cases, indicating the type of plot to be drawn. 
 
+## List of supported countries
+
+### Countries List
+
+##### These are the countries supported for now, and for it to work, they must be inputted **exactly the same**.
+#####[CASE-SENSITIVE]
+
+•  Afghanistan
+•  Albania  
+•  Algeria  
+•  Andorra
+•  Angola  
+•  Antigua and Barbuda  
+•  Argentina 
+•  Armenia  
+•  Australia  
+•  Austria  
+•  Azerbaijan  
+•  Bahamas  
+•  Bahrain  
+•  Bangladesh  
+•  Barbados  
+•  Belarus  
+•  Belgium  
+•  Belize
+•  Benin  
+•  Bhutan  
+•  Bolivia
+•  Bosnia and Herzegovina  
+•  Botswana  
+•  Brazil  
+•  Brunei  
+•  Bulgaria
+•  Burkina Faso
+•  Burma
+•  Burundi  
+•  Cabo Verde 
+•  Cambodia  
+•  Cameroon  
+•  Canada  
+•  Central African Republic  
+•  Chad  
+•  Chile  
+•  China  
+•  Colombia
+•  Comoros  
+•  Congo (Brazzaville)  
+•  Congo (Kinshasa)  
+•  Costa Rica
+•  Cote d'Ivoire  
+•  Croatia
+•  Cuba  
+•  Cyprus  
+•  Czechia 
+•  Denmark  
+•  Djibouti  
+•  Dominica
+•  Dominican Republic  
+•  Ecuador  
+•  Egypt  
+•  El Salvador
+•  Equatorial Guinea  
+•  Eritrea  
+•  Estonia  
+•  Eswatini  
+•  Ethiopia
+•  Fiji  
+•  Finland
+•  France  
+•  Gabon  
+•  Gambia  
+•  Georgia
+•  Germany  
+•  Ghana  
+•  Greece  
+•  Grenada 
+•  Guatemala
+•  Guinea  
+•  Guinea-Bissau  
+•  Guyana  
+•  Haiti  
+•  Holy See
+•  Honduras  
+•  Iceland  
+•  India  
+•  Indonesia  
+•  Iran  
+•  Iraq  
+•  Ireland  
+•  Israel  
+•  Italy  
+•  Jamaica
+•  Japan  
+•  Jordan  
+•  Kazakhstan  
+•  Kenya  
+•  Korea, South  
+•  Kosovo
+•  Kuwait  
+•  Hungary  
+•  Kyrgyzstan  
+•  Laos  
+•  Latvia  
+•  Lebanon  
+•  Liberia  
+•  Libya
+•  Liechtenstein  
+•  Lithuania  
+•  Luxembourg
+•  Madagascar  
+•  Malawi  
+•  Malaysia  
+•  Maldives  
+•  Mali 
+•  Malta
+•  Mauritania
+•  Mauritius
+•  Mexico  
+•  Moldova  
+•  Monaco  
+•  Mongolia  
+•  Montenegro
+•  Morocco  
+•  Mozambique
+•  Namibia  
+•  Nepal  
+•  Netherlands  
+•  New Zealand  
+•  Nicaragua
+•  Niger  
+•  Nigeria  
+•  North Macedonia  
+•  Norway  
+•  Oman  
+•  Pakistan  
+•  Panama  
+•  Papua New Guinea  
+•  Paraguay  
+•  Peru  
+•  Philippines  
+•  Poland  
+•  Portugal  
+•  Qatar  
+•  Romania  
+•  Russia  
+•  Rwanda  
+•  Saint Kitts and Nevis
+•  Saint Lucia  
+•  Saint Vincent and the Grenadines  
+•  San Marino  
+•  Sao Tome and Principe  
+•  Saudi Arabia  
+•  Senegal  
+•  Serbia  
+•  Seychelles
+•  Sierra Leone  
+•  Singapore  
+•  Slovakia  
+•  Slovenia  
+•  Somalia
+•  South Africa  
+•  South Sudan  
+•  Spain  
+•  Sri Lanka  
+•  Sudan
+•  Suriname  
+•  Sweden  
+•  Switzerland
+•  Syria  
+•  Taiwan*  
+•  Tajikistan  
+•  Tanzania  
+•  Thailand  
+•  Timor-Leste  
+•  Togo  
+•  Trinidad and Tobago  
+•  Tunisia
+•  Turkey  
+•  Uganda
+•  Ukraine
+•  United Arab Emirates  
+•  United Kingdom  
+•  Uruguay  
+•  US
+•  Uzbekistan  
+•  Venezuela  
+•  Vietnam  
+•  West Bank and Gaza  
+•  Western Sahara  
+•  Yemen 
+•  Zambia  
+•  Zimbabwe
+
 [bd-master-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/master?filepath=src%2Ftally_visualiser.ipynb
 [bd-rc-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/rc?filepath=src%2Ftally_visualiser.ipynb
 [bd-dev-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/dev?filepath=src%2Ftally_visualiser.ipynb
