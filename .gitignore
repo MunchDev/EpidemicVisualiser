@@ -134,3 +134,6 @@ dmypy.json
 bin/
 lib/
 pyvenv.cfg
+cache/03052020.json
+cache/04052020.json
+README.md
