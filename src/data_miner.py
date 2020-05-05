@@ -3,6 +3,7 @@ from helper import modify_date, clear, is_valid_date
 from helper import print_type_error as t_stderr
 from helper import print_error as stderr
 from numpy import array, linspace
+from matplotlib import pyplot as plt
 
 def _get_country_data(country, date, days):  
     entries = []
@@ -18,6 +19,9 @@ def _validate_timespan(ts):
         return False
     if ts <= 0:
         stderr("Expected positive timespan, but given {}".format(ts)) 
+        return False
+    if ts > 0x7fffffff:
+        stderr("Expected a 32-bit integer, but given {}".format(ts))
         return False
     return True
 def _validate_date(d):
@@ -50,36 +54,23 @@ def _validate_country(ct):
                    .format(type(country)))
             return -1
     return False
-def _transpose_plot(countries, date, timespan, scale, plot_type):
-    plt = None
-    if not _test_flag:
-        from matplotlib import pyplot
-        plt = pyplot
+def _transpose_plot(countries, date, timespan, scale, plot_type): 
     for country in countries:
         data = _get_country_data(country, date, timespan)
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1       
-        x_data = linspace(-(timespan-1), 0, num=timespan)
-        if not _test_flag:
-            plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
+        x_data = linspace(-(timespan-1), 0, num=timespan)        
+        plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
     ylabel = "Number of " + ["confirmed cases", "deaths", "recovered cases", "active cases"][plot_type]    
-    if not _test_flag:
-        plt.yscale(scale)
-        plt.xlabel("Number of days since the latest report")
-        plt.ylabel(ylabel)
-        plt.title(ylabel + " over the world")
-        plt.legend(loc="best")
-        plt.show()
+    plt.yscale(scale)
+    plt.xlabel("Number of days since the latest report")
+    plt.ylabel(ylabel)
+    plt.title(ylabel + " over the world")
+    plt.legend(loc="best")
+    plt.show()
     return 0
 def plot_tally(country, date, timespan, *args, **kwargs):
-    global _test_flag
-    _test_flag = kwargs.get("test_flag", False)
-    
-    plt = None
-    if not _test_flag:
-        from matplotlib import pyplot
-        plt = pyplot
     multiple_countries = _validate_country(country)
     if multiple_countries == -1:
         return -1        
@@ -100,28 +91,27 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             return -1   
         x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
-        if not _test_flag:
-            if "c" in plot_type:
-                plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
-                plot_enabled = True
-            if "r" in plot_type:
-                plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
-                plot_enabled = True
-            if "d" in plot_type:
-                plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
-                plot_enabled = True
-            if "a" in plot_type:
-                plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
-                plot_enabled = True  
-            if not plot_enabled:
-                stderr("Expected at least one plot type, but given '{}'".format(plot_type))
-                return -1      
-            plt.yscale(scale)
-            plt.xlabel("Number of days since the latest report")
-            plt.ylabel("Number of cases")
-            plt.title("COVID-19 tally for " + country)
-            plt.legend(loc="best")
-            plt.show() 
+        if "c" in plot_type:
+            plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
+            plot_enabled = True
+        if "r" in plot_type:
+            plt.plot(x_data, array([x[1] for x in data]), '.g-', label="Recovered")
+            plot_enabled = True
+        if "d" in plot_type:
+            plt.plot(x_data, array([x[2] for x in data]), '.k-', label="Deaths")
+            plot_enabled = True
+        if "a" in plot_type:
+            plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
+            plot_enabled = True  
+        if not plot_enabled:
+            stderr("Expected at least one plot type, but given '{}'".format(plot_type))
+            return -1      
+        plt.yscale(scale)
+        plt.xlabel("Number of days since the latest report")
+        plt.ylabel("Number of cases")
+        plt.title("COVID-19 tally for " + country)
+        plt.legend(loc="best")
+        plt.show() 
         return 0
     elif kwargs.get("transpose", False):      
         plot_type = kwargs.get("plot_type", "cdra")
