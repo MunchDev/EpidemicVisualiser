@@ -1,13 +1,26 @@
 from data_miner import plot_tally
 from helper import clear
+from helper import print_error as stderr
+from json import load
 
+population = None
+try:
+    with open("../cache/population.json") as f:
+        population = json.load(f)
+    if population == None or len(population) == 0:
+        stderr("Unable to load population! Aborting...")
+        input("Press Enter to continue..."
+        raise RuntimeError("Unable to load population!")
+except:
+    exit(-1)
+        
 def main():
     welcome_options = [
         "Show country tally plot",
         "Show world tally plot",
     ]
     option = welcome_screen_option(welcome_options)
-    return 0
+    return 0    
 
 def welcome_screen_option(options):
     i = None
