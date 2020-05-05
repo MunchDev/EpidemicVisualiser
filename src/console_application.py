@@ -63,7 +63,22 @@ def ct_plot():
             else:
                 flag = True
         return date
-            
+    def get_ts():
+        ts = None
+        flag = False
+        while True:
+            clear()
+            print("Step 3: Choose a suitable timespan")
+            # TODO: Add instruction here, same as in the notebooks.
+            if flag:
+                print("\nTimespan is invalid! Try again.\n")
+            date = input("Enter timespan > ")
+            if ts.isdigit():
+                ts = int(ts)
+                if 0 < ts < 0x7fffffff:
+                    break
+            flag = True
+        return ts
 def welcome_screen_option(options):
     i = None
     while True:
