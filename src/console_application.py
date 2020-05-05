@@ -89,24 +89,52 @@ def ct_plot():
             print("Leave empty to proceed to Step 5.\n")
             if flag:
                 print("Scale is invalid! Try again.\n")
-            s = input("Enter scale name('log' or 'linear') > ")
+            s = input("Enter scale name ('log' or 'linear') > ")
             flag = False
-            if ct == "":
+            if s == "":
                 if len(scale) == 0:
                     clear()
-                    print("You did not enter any valid timespan! Please enter at least one.")
+                    print("You did not enter any valid scale! Please enter at least one.")
                     input("Press Enter to go back and try again")
                 if len(scale) == 1:
                     scale = scale[0]
                     break
                 else:
                     break
-            elif ct != "log" and ct != "linear":
+            elif s != "log" and s != "linear":
                 flag = True
             else:
                 scale.append(s)
         clear()
         return scale
+    def get_pltype():
+        pltype = []
+        flag = False
+        while True:
+            clear()
+            print("Step 5: Choose the plot type(s) you will be using")
+            # TODO: Add instruction here, same as in the notebooks.
+            print("Leave empty to proceed to finish.\n")
+            if flag:
+                print("Plot type is invalid! Try again.\n")
+            p = input("Enter plot type > ")
+            flag = False
+            if p == "":
+                if len(pltype) == 0:
+                    clear()
+                    print("You did not enter any valid plot type! Please enter at least one.")
+                    input("Press Enter to go back and try again")
+                if len(pltype) == 1:
+                    pltype = pltype[0]
+                    break
+                else:
+                    break
+            
+                flag = True
+            else:
+                pltype.append(p)
+        clear()
+        return pltype
 def welcome_screen_option(options):
     i = None
     while True:
