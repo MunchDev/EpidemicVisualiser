@@ -2,11 +2,12 @@ from data_miner import plot_tally
 from helper import clear, is_valid_date
 from helper import print_error as stderr
 from json import load
+from sys import exit
 
 population = None
 try:
     with open("../cache/population.json") as f:
-        population = json.load(f)
+        population = load(f)
     if population == None or len(population) == 0:
         stderr("Unable to load population! Aborting...")
         input("Press Enter to continue...")
@@ -19,8 +20,10 @@ def main():
         "Show country tally plot",
         "Show world tally plot"
     ]
+    w_plot = lambda: ct_plot(True)
+    f = [ct_plot, w_plot]
     option = welcome_screen_option(welcome_options)
-    return 0
+    return f[option]()
 
 def ct_plot(t=False):
     def get_ct():
@@ -72,7 +75,7 @@ def ct_plot(t=False):
             # TODO: Add instruction here, same as in the notebooks.
             if flag:
                 print("\nTimespan is invalid! Try again.\n")
-            date = input("Enter timespan > ")
+            ts = input("Enter timespan > ")
             if ts.isdigit():
                 ts = int(ts)
                 if 0 < ts < 0x7fffffff:
@@ -96,7 +99,7 @@ def ct_plot(t=False):
                     clear()
                     print("You did not enter any valid scale! Please enter at least one.")
                     input("Press Enter to go back and try again")
-                if len(scale) == 1:
+                elif len(scale) == 1:
                     scale = scale[0]
                     break
                 else:
@@ -137,13 +140,14 @@ def ct_plot(t=False):
         return pltype
     data = {"c":get_ct(), "d":get_date(), "t":get_ts(), "s":get_scale(), "p":get_pltype()}
     opt = "invalid"
-    while opt == "invalid:
+    while opt == "invalid":
         p = input("Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
         opt = {"c":get_ct, "d":get_date, "t":get_ts, "s":get_scale, "p":get_pltype}.get(p, "invalid")
         if p == "o":
             break
         if type(opt) != str:
             data[p] = opt()
+    print(data)
     plot_tally(data["c"], data["d"], data["t"], scale=data["s"], plot_type=data["p"], transpose=t)
     return 0
 def welcome_screen_option(options):
