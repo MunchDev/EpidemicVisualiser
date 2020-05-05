@@ -129,7 +129,7 @@ def ct_plot():
                     break
                 else:
                     break
-            
+            elif ("c" not in p) and ("d" not in p) and ("r" not in p) and ("a" not in p):
                 flag = True
             else:
                 pltype.append(p)
