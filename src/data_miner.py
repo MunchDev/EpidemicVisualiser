@@ -20,9 +20,6 @@ def _validate_timespan(ts):
     if ts <= 0:
         stderr("Expected positive timespan, but given {}".format(ts)) 
         return False
-    if ts > 0x7fffffff:
-        stderr("Expected a 32-bit integer, but given {}".format(ts))
-        return False
     return True
 def _validate_date(d):
     if type(d) != str:
@@ -71,6 +68,8 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
     plt.show()
     return 0
 def plot_tally(country, date, timespan, *args, **kwargs):
+    global _test_flag
+    _test_flag = kwargs.get("test_flag", False)
     multiple_countries = _validate_country(country)
     if multiple_countries == -1:
         return -1        
@@ -111,7 +110,8 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         plt.ylabel("Number of cases")
         plt.title("COVID-19 tally for " + country)
         plt.legend(loc="best")
-        plt.show() 
+        if not test_flag:
+            plt.show() 
         return 0
     elif kwargs.get("transpose", False):      
         plot_type = kwargs.get("plot_type", "cdra")
