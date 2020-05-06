@@ -4,17 +4,15 @@ This repository contains a visualiser and prediction model for the COVID-19 situ
 Note: This is a school project, feel free to send me a PR!
 
 ## Go to LiveNotes
-|Branch                 |Notebook on Binder                                            |
-|-----------------------|--------------------------------------------------------------|
-|master (Stable release)|[![Binder](https://mybinder.org/badge_logo.svg)][bd-master-nb]|
-|rc (Approved release)  |[![Binder](https://mybinder.org/badge_logo.svg)][bd-rc-nb]    |
-|dev (Experimental)     |[![Binder](https://mybinder.org/badge_logo.svg)][bd-dev-nb]   |
+|Branch                   |Notebook on Binder                                            |
+|-------------------------|--------------------------------------------------------------|
+|master (Production ready)|[![Binder](https://mybinder.org/badge_logo.svg)][bd-master-nb]|
+|develop (Experimental)   |[![Binder](https://mybinder.org/badge_logo.svg)][bd-dev-nb]   |
 ## Build status
-|Branch                 |Notebook on Binder                                                                       |
-|-----------------------|-----------------------------------------------------------------------------------------|
-|master (Stable release)|[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=master)][ci]|
-|rc (Approved release)  |[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=rc)][ci]    |
-|dev (Experimental)     |[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=dev)][ci]   |
+|Branch                   |Notebook on Binder                                                                        |
+|-------------------------|------------------------------------------------------------------------------------------|
+|master (Production ready)|[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=master)][ci] |
+|develop (Experimental)   |[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=develop)][ci]|
 ## Usage
 ### Live notebooks
 Click on any [LiveNote](#go-to-livenotes) above to explore our notebooks 
@@ -64,6 +62,5 @@ _Return value_: Returns 0 if no errors occured and -1 if at least one error occu
 [Click HERE](https://github.com/MunchDev/EpidemicSimulator/blob/dev-country/cache/countries.json)
 
 [bd-master-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/master?filepath=src%2Ftally_visualiser.ipynb
-[bd-rc-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/rc?filepath=src%2Ftally_visualiser.ipynb
-[bd-dev-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/dev?filepath=src%2Ftally_visualiser.ipynb
+[bd-dev-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/develop?filepath=src%2Ftally_visualiser.ipynb
 [ci]: https://travis-ci.com/MunchDev/EpidemicSimulator
