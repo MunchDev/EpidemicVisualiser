@@ -1,7 +1,8 @@
 # Epidemic Simulator
-This repository contains visualiser and prediction model for the COVID-19 situation.
+This repository contains a visualiser and prediction model for the COVID-19 situation.
 
-Note: This is a school project, feel free to send my a PR!
+Note: This is a school project, feel free to send me a PR!
+
 ## Go to LiveNotes
 |Branch                 |Notebook on Binder                                            |
 |-----------------------|--------------------------------------------------------------|
@@ -16,8 +17,9 @@ Note: This is a school project, feel free to send my a PR!
 |dev (Experimental)     |[![Build Status](https://travis-ci.com/MunchDev/EpidemicSimulator.svg?branch=dev)][ci]   |
 ## Usage
 ### Live notebooks
-Click on any [LiveNote](#go-to-livenotes) above to explore our notebooks,
-without the hassle of downloading or installing anything! Explore as far as you want, and if you break it?
+Click on any [LiveNote](#go-to-livenotes) above to explore our notebooks 
+without the hassle of downloading or installing anything!
+Explore as far as you want, and if you break it?
 Go and create another notebook!
 ### Local machine
 If you want to host the notebook on your own computer, follow the instructions:
@@ -25,14 +27,15 @@ If you want to host the notebook on your own computer, follow the instructions:
 You need:
 * Python 3.5 or above (higher versions are not tested, but highly stable)
 * (Optional) ```virtualenv```
-and run the followings:
+and run the following:
 ```shell
 $ git clone https://github.com/MunchDev/EpidemicSimulator
 $ cd EpidemicSimulator
 $ pip install -r "requirements.txt"
 ```
-*NOTE*: It does not install ```JupyterLab``` for Jupyter Notebook, if you still want to use,
-please install it as on [their website](https://jupyter.org).
+
+*NOTE*: It does not install ```JupyterLab``` for Jupyter Notebook, if you want to use it,
+please install it on [their website](https://jupyter.org).
 #### Import
 Please ***DO AND ONLY DO*** the following:
 ```python
@@ -47,7 +50,7 @@ This documentation is only available to front-end functions. Other functions use
 
 ### ```data_miner.plot_tally```
 Draw the COVID-19 statistics plots of different countries in a period of time, using different scales and types.\
-_Return value_: Returns 0 if no errors occured and -1 if at least one error occurs.\
+_Return value_: Returns 0 if no errors occured and -1 if at least one error occurs.
 ##### _Positional arguments_:
 * _country_: A string or a list of string. Each string is a name of a country you want to plot.
 * _date_: A string of date in this format ```dd-mm-yyyy```. This is the date of the latest data to be plotted.
@@ -55,6 +58,10 @@ _Return value_: Returns 0 if no errors occured and -1 if at least one error occu
 ##### _Keyword arguments_:
 * _scale_: A string or a list of string. Each string is either "log" or "linear, indicating the type of y-scale of the country to be plotted. Default is "log".
 * _plot_type_: A string or a list of string. Each string consists of letter (c)onfirmed cases, (d)eaths, (r)ecovered cases and (a)ctive cases, indicating the type of plot to be drawn. 
+
+## Help
+### For list of supported countries:
+[Click HERE](https://github.com/MunchDev/EpidemicSimulator/blob/dev-country/cache/countries.json)
 
 [bd-master-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/master?filepath=src%2Ftally_visualiser.ipynb
 [bd-rc-nb]: https://mybinder.org/v2/gh/MunchDev/EpidemicSimulator/rc?filepath=src%2Ftally_visualiser.ipynb
