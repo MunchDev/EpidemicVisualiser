@@ -18,7 +18,7 @@ except:
 def main():
     welcome_options = [
         "Show country tally plot",
-        "Show world tally plot"
+        "Tranposed version of the above"
     ]
     w_plot = lambda: ct_plot(True)
     f = [ct_plot, w_plot]
@@ -31,8 +31,12 @@ def ct_plot(t=False):
         flag = False
         while True:
             clear()
-            print("Step 1: Choose the countries you want to plot")
-            # TODO: Add instruction here, same as in the notebooks.
+            print("Step 1: Choose the countries you want to plot\n")
+            print("Country -- The country to be plotted")
+            print("Now supported multiple countries! You can put any countries in a list"
+            print("and it will be drawn.\n"
+            print("For the full list of available countries, please go to:"
+            print("https://github.com/MunchDev/EpidemicSimulator\n"
             print("Leave empty to proceed to Step 2.\n")
             if flag:
                 print("Country name is invalid! Try again.\n")
@@ -57,7 +61,10 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 2: Choose a date")
-            # TODO: Add instruction here, same as in the notebooks.
+# Date -- The latest date to be plotted (in dd-mm-yyyy format)
+# Please note that there are delays between the real-time report
+# and this compiled report. If there is no report available
+# for today, please switch to the previous date.
             if flag:
                 print("\nDate is invalid! Try again.\n")
             date = input("Enter date > ")
@@ -72,7 +79,9 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 3: Choose a suitable timespan")
-            # TODO: Add instruction here, same as in the notebooks.
+# Timespan -- The period of data plotted
+# Please choose a suitable timespan, so that the earliest
+# date is no earlier than 22-03-2020.
             if flag:
                 print("\nTimespan is invalid! Try again.\n")
             ts = input("Enter timespan > ")
@@ -88,7 +97,10 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 4: Choose the scale you will be using")
-            # TODO: Add instruction here, same as in the notebooks.
+# Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale
+# Support multiple countries. If only one string of scale is provided, it
+# will used across all plots. If the number of scale is smaller than the
+# number of countries, the rest will be taken as default of "log".
             print("Leave empty to proceed to Step 5.\n")
             if flag:
                 print("Scale is invalid! Try again.\n")
@@ -116,7 +128,11 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 5: Choose the plot type(s) you will be using")
-            # TODO: Add instruction here, same as in the notebooks.
+# Plot type -- Show plot of confirmed cases (c), deaths (d), recovered cases (r),
+# active cases (a) or any combination of these.
+# Support multiple countries. If only one string of plot type is provided, it
+# will used across all plots. If the number of plot type is smaller than
+# the number of countries, the rest will be taken as default of "cdra".
             print("Leave empty to proceed to finish.\n")
             if flag:
                 print("Plot type is invalid! Try again.\n")
