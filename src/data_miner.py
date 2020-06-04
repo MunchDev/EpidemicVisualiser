@@ -142,17 +142,22 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             return -1
         if len(scale) < n:
             scale += ["log"] * (n - len(scale))
+        time_printed = 0
         if "c" in plot_type:
-            _transpose_plot(country, date, timespan, scale[0], 0)
+            _transpose_plot(country, date, timespan, scale[time_printed], 0)
+            time_printed += 1
             plot_enabled = True
         if "d" in plot_type:
-            _transpose_plot(country, date, timespan, scale[1], 1)
+            _transpose_plot(country, date, timespan, scale[time_printed], 1)
+            time_printed += 1
             plot_enabled = True
         if "r" in plot_type:
-            _transpose_plot(country, date, timespan, scale[2], 2)
+            _transpose_plot(country, date, timespan, scale[time_printed], 2)
+            time_printed += 1
             plot_enabled = True
         if "a" in plot_type:
-            _transpose_plot(country, date, timespan, scale[3], 3)
+            _transpose_plot(country, date, timespan, scale[time_printed], 3)
+            time_printed += 1
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
