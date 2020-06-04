@@ -100,7 +100,7 @@ def ct_plot(t=False):
             print("Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale")
             print("Support multiple countries. If only one string of scale is provided, it")
             print("will used across all plots. If the number of scale is smaller than the")
-            print('number of countries, the rest will be taken as default of "log".')
+            print('number of countries, the rest will be taken as default of "log".\n')
             print("Leave empty to proceed to Step 5.\n")
             if flag:
                 print("Scale is invalid! Try again.\n")
@@ -132,7 +132,7 @@ def ct_plot(t=False):
             print("active cases (a) or any combination of these.")
             print("Support multiple countries. If only one string of plot type is provided, it")
             print("will used across all plots. If the number of plot type is smaller than")
-            print('the number of countries, the rest will be taken as default of "cdra".')
+            print('the number of countries, the rest will be taken as default of "cdra".\n')
             print("Leave empty to proceed to finish.\n")
             if flag:
                 print("Plot type is invalid! Try again.\n")
