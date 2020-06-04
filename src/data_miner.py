@@ -60,8 +60,11 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1       
-        x_data = linspace(-(timespan-1), 0, num=timespan)        
-        plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
+        x_data = linspace(-(timespan-1), 0, num=timespan)
+        if timespan < 30:
+            plt.plot(x_data, array([x[plot_type] for x in data]), "-", label=country)
+        else:
+            plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)
     ylabel = "Number of " + ["confirmed cases", "deaths", "recovered cases", "active cases"][plot_type]    
     plt.yscale(scale)
     plt.xlabel("Number of days since the latest report")
