@@ -54,14 +54,17 @@ def _validate_country(ct):
                    .format(type(country)))
             return -1
     return False
-def _transpose_plot(countries, date, timespan, scale, plot_type): 
+def _transpose_plot(countries, date, timespan, scale, plot_type):
     for country in countries:
         data = _get_country_data(country, date, timespan)
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1       
-        x_data = linspace(-(timespan-1), 0, num=timespan)        
-        plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)   
+        x_data = linspace(-(timespan-1), 0, num=timespan)
+        if timespan < 30:
+            plt.plot(x_data, array([x[plot_type] for x in data]), "-", label=country)
+        else:
+            plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)
     ylabel = "Number of " + ["confirmed cases", "deaths", "recovered cases", "active cases"][plot_type]    
     plt.yscale(scale)
     plt.xlabel("Number of days since the latest report")
@@ -92,16 +95,28 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:
-            plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
+            if timespan > 30:
+                plt.plot(x_data, array([x[0] for x in data]), 'b-', label="Confirmed")
+            else:
+                plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
             plot_enabled = True
         if "d" in plot_type:
-            plt.plot(x_data, array([x[1] for x in data]), '.k-', label="Deaths")
+            if timespan > 30:
+                plt.plot(x_data, array([x[1] for x in data]), 'k-', label="Deaths")
+            else:
+                plt.plot(x_data, array([x[1] for x in data]), '.k-', label="Deaths")
             plot_enabled = True
         if "r" in plot_type:
-            plt.plot(x_data, array([x[2] for x in data]), '.g-', label="Recovered")
+            if timespan > 30:
+                plt.plot(x_data, array([x[2] for x in data]), 'g-', label="Recovered")
+            else:
+                plt.plot(x_data, array([x[2] for x in data]), '.g-', label="Recovered")
             plot_enabled = True
         if "a" in plot_type:
-            plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
+            if timespan > 30:
+                plt.plot(x_data, array([x[3] for x in data]), 'r-', label="Active")
+            else:
+                plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
@@ -127,17 +142,22 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             return -1
         if len(scale) < n:
             scale += ["log"] * (n - len(scale))
+        time_printed = 0
         if "c" in plot_type:
-            _transpose_plot(country, date, timespan, scale[0], 0)
+            _transpose_plot(country, date, timespan, scale[time_printed], 0)
+            time_printed += 1
             plot_enabled = True
         if "d" in plot_type:
-            _transpose_plot(country, date, timespan, scale[1], 1)
+            _transpose_plot(country, date, timespan, scale[time_printed], 1)
+            time_printed += 1
             plot_enabled = True
         if "r" in plot_type:
-            _transpose_plot(country, date, timespan, scale[2], 2)
+            _transpose_plot(country, date, timespan, scale[time_printed], 2)
+            time_printed += 1
             plot_enabled = True
         if "a" in plot_type:
-            _transpose_plot(country, date, timespan, scale[3], 3)
+            _transpose_plot(country, date, timespan, scale[time_printed], 3)
+            time_printed += 1
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))

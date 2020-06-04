@@ -1,4 +1,4 @@
-# Epidemic Simulator
+# Epidemic Visualiser
 This repository contains a visualiser and prediction model for the COVID-19 situation.
 
 Note: This is a school project, feel free to send me a PR!
