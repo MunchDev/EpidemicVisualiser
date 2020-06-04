@@ -54,7 +54,7 @@ def _validate_country(ct):
                    .format(type(country)))
             return -1
     return False
-def _transpose_plot(countries, date, timespan, scale, plot_type): 
+def _transpose_plot(countries, date, timespan, scale, plot_type):
     for country in countries:
         data = _get_country_data(country, date, timespan)
         if data == -1:
