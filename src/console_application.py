@@ -33,10 +33,10 @@ def ct_plot(t=False):
             clear()
             print("Step 1: Choose the countries you want to plot\n")
             print("Country -- The country to be plotted")
-            print("Now supported multiple countries! You can put any countries in a list"
-            print("and it will be drawn.\n"
-            print("For the full list of available countries, please go to:"
-            print("https://github.com/MunchDev/EpidemicSimulator\n"
+            print("Now supported multiple countries! You can put any countries in a list")
+            print("and it will be drawn.\n")
+            print("For the full list of available countries, please go to:")
+            print("https://github.com/MunchDev/EpidemicSimulator\n")
             print("Leave empty to proceed to Step 2.\n")
             if flag:
                 print("Country name is invalid! Try again.\n")
@@ -61,10 +61,10 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 2: Choose a date")
-# Date -- The latest date to be plotted (in dd-mm-yyyy format)
-# Please note that there are delays between the real-time report
-# and this compiled report. If there is no report available
-# for today, please switch to the previous date.
+            print("Date -- The latest date to be plotted (in dd-mm-yyyy format)")
+            print("Please note that there are delays between the real-time report")
+            print("and this compiled report. If there is no report available")
+            print("for today, please switch to the previous date.")
             if flag:
                 print("\nDate is invalid! Try again.\n")
             date = input("Enter date > ")
@@ -79,9 +79,9 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 3: Choose a suitable timespan")
-# Timespan -- The period of data plotted
-# Please choose a suitable timespan, so that the earliest
-# date is no earlier than 22-03-2020.
+            print("Timespan -- The period of data plotted")
+            print("Please choose a suitable timespan, so that the earliest")
+            print("date is no earlier than 22-03-2020.")
             if flag:
                 print("\nTimespan is invalid! Try again.\n")
             ts = input("Enter timespan > ")
@@ -97,10 +97,10 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 4: Choose the scale you will be using")
-# Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale
-# Support multiple countries. If only one string of scale is provided, it
-# will used across all plots. If the number of scale is smaller than the
-# number of countries, the rest will be taken as default of "log".
+            print("Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale")
+            print("Support multiple countries. If only one string of scale is provided, it")
+            print("will used across all plots. If the number of scale is smaller than the")
+            print('number of countries, the rest will be taken as default of "log".\n')
             print("Leave empty to proceed to Step 5.\n")
             if flag:
                 print("Scale is invalid! Try again.\n")
@@ -128,11 +128,11 @@ def ct_plot(t=False):
         while True:
             clear()
             print("Step 5: Choose the plot type(s) you will be using")
-# Plot type -- Show plot of confirmed cases (c), deaths (d), recovered cases (r),
-# active cases (a) or any combination of these.
-# Support multiple countries. If only one string of plot type is provided, it
-# will used across all plots. If the number of plot type is smaller than
-# the number of countries, the rest will be taken as default of "cdra".
+            print("Plot type -- Show plot of confirmed cases (c), deaths (d), recovered cases (r),")
+            print("active cases (a) or any combination of these.")
+            print("Support multiple countries. If only one string of plot type is provided, it")
+            print("will used across all plots. If the number of plot type is smaller than")
+            print('the number of countries, the rest will be taken as default of "cdra".\n')
             print("Leave empty to proceed to finish.\n")
             if flag:
                 print("Plot type is invalid! Try again.\n")
