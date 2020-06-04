@@ -92,16 +92,28 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:
-            plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
+            if timespan > 30:
+                plt.plot(x_data, array([x[0] for x in data]), 'b-', label="Confirmed")
+            else:
+                plt.plot(x_data, array([x[0] for x in data]), '.b-', label="Confirmed")
             plot_enabled = True
         if "d" in plot_type:
-            plt.plot(x_data, array([x[1] for x in data]), '.k-', label="Deaths")
+            if timespan > 30:
+                plt.plot(x_data, array([x[1] for x in data]), 'k-', label="Deaths")
+            else:
+                plt.plot(x_data, array([x[1] for x in data]), '.k-', label="Deaths")
             plot_enabled = True
         if "r" in plot_type:
-            plt.plot(x_data, array([x[2] for x in data]), '.g-', label="Recovered")
+            if timespan > 30:
+                plt.plot(x_data, array([x[2] for x in data]), 'g-', label="Recovered")
+            else:
+                plt.plot(x_data, array([x[2] for x in data]), '.g-', label="Recovered")
             plot_enabled = True
         if "a" in plot_type:
-            plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
+            if timespan > 30:
+                plt.plot(x_data, array([x[3] for x in data]), 'r-', label="Active")
+            else:
+                plt.plot(x_data, array([x[3] for x in data]), '.r-', label="Active")
             plot_enabled = True  
         if not plot_enabled:
             stderr("Expected at least one plot type, but given '{}'".format(plot_type))
