@@ -61,7 +61,7 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
             stderr("'{}' is unavailable!".format(country))
             return -1       
         x_data = linspace(-(timespan-1), 0, num=timespan)
-        if timespan < 30:
+        if timespan > 30:
             plt.plot(x_data, array([x[plot_type] for x in data]), "-", label=country)
         else:
             plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)
