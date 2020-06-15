@@ -5,7 +5,6 @@ from helper import print_error as stderr
 from numpy import array, linspace
 from matplotlib import pyplot as plt
 import datetime
-import sys
 
 def _get_country_data(country, date, days):  
     entries = []
