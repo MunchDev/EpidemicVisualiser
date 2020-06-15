@@ -4,10 +4,15 @@ from helper import print_type_error as t_stderr
 from helper import print_error as stderr
 from numpy import array, linspace
 from matplotlib import pyplot as plt
+import datetime
 
 def _get_country_data(country, date, days):  
     entries = []
     for i in range(days-1, -1, -1):
+        current = modify_date(date, -i)
+        if datetime.datetime.strptime(current, "%d-%m-%Y").date() < datetime.date(2020, 3, 22):
+            stderr("Timespan overflowed for the chosen date!")
+            return 0
         data = parse_data(modify_date(date, -i)).get(country, None)
         if data == None:   
             return -1
@@ -59,9 +64,11 @@ def _transpose_plot(countries, date, timespan, scale, plot_type):
         data = _get_country_data(country, date, timespan)
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
-            return -1       
+            return -1 
+        elif data == 0:
+            return -1
         x_data = linspace(-(timespan-1), 0, num=timespan)
-        if timespan < 30:
+        if timespan > 30:
             plt.plot(x_data, array([x[plot_type] for x in data]), "-", label=country)
         else:
             plt.plot(x_data, array([x[plot_type] for x in data]), ".-", label=country)
@@ -92,6 +99,8 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         if data == -1:
             stderr("'{}' is unavailable!".format(country))
             return -1   
+        elif data == 0:
+            return -1
         x_data = linspace(-(timespan-1), 0, num=timespan)       
         plot_enabled = False
         if "c" in plot_type:

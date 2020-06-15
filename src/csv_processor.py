@@ -13,7 +13,7 @@ def fetch_data(date):
         return list(reader(StringIO("\n".join(list(map(lambda a: str(a, "utf-8")[:-1], list(urlopen(url))))))))
     except:
         stderr("No dataset found for {}.".format(date))
-        return -1 
+        exit(-1) 
 def parse_data(date):
     filename = "../cache/" + "".join(date.split("-")) + ".json"
     if isfile(filename):
