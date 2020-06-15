@@ -153,19 +153,23 @@ def plot_tally(country, date, timespan, *args, **kwargs):
             scale += ["log"] * (n - len(scale))
         time_printed = 0
         if "c" in plot_type:
-            _transpose_plot(country, date, timespan, scale[time_printed], 0)
+            if _transpose_plot(country, date, timespan, scale[time_printed], 0) == -1:
+                return -1
             time_printed += 1
             plot_enabled = True
         if "d" in plot_type:
-            _transpose_plot(country, date, timespan, scale[time_printed], 1)
+            if _transpose_plot(country, date, timespan, scale[time_printed], 1) == -1:
+                return -1
             time_printed += 1
             plot_enabled = True
         if "r" in plot_type:
-            _transpose_plot(country, date, timespan, scale[time_printed], 2)
+            if _transpose_plot(country, date, timespan, scale[time_printed], 2) == -1:
+                return -1
             time_printed += 1
             plot_enabled = True
         if "a" in plot_type:
-            _transpose_plot(country, date, timespan, scale[time_printed], 3)
+            if _transpose_plot(country, date, timespan, scale[time_printed], 3) == -1:
+                return -1
             time_printed += 1
             plot_enabled = True  
         if not plot_enabled:
@@ -192,6 +196,8 @@ def plot_tally(country, date, timespan, *args, **kwargs):
         if len(plot_type) < n:
             plot_type += ["log"] * (n - len(scale))           
         for i in range(n):            
-            plot_tally(country[i], date, timespan, scale=scale[i], plot_type=plot_type[i])
+            result = plot_tally(country[i], date, timespan, scale=scale[i], plot_type=plot_type[i])
+            if result == -1:
+                return -1
         return 0  
 __all__ = [plot_tally]
