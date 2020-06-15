@@ -10,7 +10,7 @@ def _get_country_data(country, date, days):
     entries = []
     for i in range(days-1, -1, -1):
         current = modify_date(date, -i)
-        if datetime.datetime.strptime(current, "%d-%m-%Y").date() < datetime.date(2020, 3, 21):
+        if datetime.datetime.strptime(current, "%d-%m-%Y").date() < datetime.date(2020, 3, 22):
             stderr("Timespan overflowed for the chosen date!")
             exit(-1)
         data = parse_data(modify_date(date, -i)).get(country, None)
