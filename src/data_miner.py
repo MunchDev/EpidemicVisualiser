@@ -4,10 +4,15 @@ from helper import print_type_error as t_stderr
 from helper import print_error as stderr
 from numpy import array, linspace
 from matplotlib import pyplot as plt
+import datetime
 
 def _get_country_data(country, date, days):  
     entries = []
     for i in range(days-1, -1, -1):
+        current = modify_date(date, -i)
+        if datetime.strptime(current, "%d-%m-%Y") < datetime.date(2020, 3, 21):
+            stderr("Timespan overflowed for the chosen date!")
+            exit(-1)
         data = parse_data(modify_date(date, -i)).get(country, None)
         if data == None:   
             return -1
