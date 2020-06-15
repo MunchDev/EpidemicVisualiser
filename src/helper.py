@@ -24,7 +24,7 @@ def clear():
         _ = system('clear')
     return True
 def print_type_error(obj, expected, given):
-    print_error("The expected type of {0} is {1}, but given {2}".format(obj, typeof(expected), typeof(given)))
+    print_error("The expected type of {0} is {1}, but given {2}".format(obj, type(expected), type(given)))
     return
 def print_error(err):
     print("{0}{1}{2}".format(Fore.RED, err, Style.RESET_ALL))
