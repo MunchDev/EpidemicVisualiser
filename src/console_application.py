@@ -3,12 +3,11 @@ from helper import clear, is_valid_date
 from helper import print_error as stderr
 from json import load
 from sys import exit
-import os
+from pathlib import Path
 
 population = None
 try:
-    folder = os.path.dirname(os.path.realpath("__file__"))
-    path = os.path.join(folder, "../cache/population.json")
+    path = Path(__file__).absolute().parents[1].joinpath("cache", "population.json")
     with open(path) as f:
         population = load(f)
     if population == None or len(population) == 0:

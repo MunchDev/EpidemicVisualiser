@@ -4,7 +4,7 @@ from os.path import isfile
 from json import load, dumps
 from csv import reader
 from io import StringIO
-import os
+from pathlib import Path
 
 
 def fetch_data(date):
@@ -19,9 +19,8 @@ def fetch_data(date):
 
 
 def parse_data(date):
-    folder = os.path.dirname(os.path.realpath("__file__"))
-    filename = os.path.join(folder, "../cache/" +
-                            "".join(date.split("-")) + ".json")
+    filename = Path(__file__).absolute().parents[1].joinpath(
+        "cache", "".join(date.split("-")) + ".json")
     if isfile(filename):
         with open(filename) as f:
             return load(f)
@@ -38,6 +37,6 @@ def parse_data(date):
         else:
             data_set[country_name] = [int(entry[7]), int(
                 entry[8]), int(entry[9]), int(entry[10])]
-    with open("../cache/" + "".join(date.split("-")) + ".json", "w") as f:
+    with open(filename, "w") as f:
         f.write(dumps(data_set))
     return data_set
