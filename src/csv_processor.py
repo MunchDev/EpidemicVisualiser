@@ -4,6 +4,7 @@ from os.path import isfile
 from json import load, dumps
 from csv import reader
 from io import StringIO
+import os
 
 
 def fetch_data(date):
@@ -18,7 +19,9 @@ def fetch_data(date):
 
 
 def parse_data(date):
-    filename = "../cache/" + "".join(date.split("-")) + ".json"
+    folder = os.path.dirname(os.path.realpath("__file__"))
+    filename = os.path.join(folder, "../cache/" +
+                            "".join(date.split("-")) + ".json")
     if isfile(filename):
         with open(filename) as f:
             return load(f)
