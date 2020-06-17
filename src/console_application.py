@@ -5,15 +5,15 @@ from json import load
 from sys import exit
 from pathlib import Path
 
-population = None
+countries = None
 try:
-    path = Path(__file__).absolute().parents[1].joinpath("cache", "population.json")
+    path = Path(__file__).absolute().parents[1].joinpath("cache", "countries.json")
     with open(path) as f:
-        population = load(f)
-    if population == None or len(population) == 0:
-        stderr("Unable to load population! Aborting...")
+        countries = f.readlines()
+    if countries == None or len(countries) == 0:
+        stderr("Unable to load countries! Aborting...")
         input("Press Enter to continue...")
-        raise RuntimeError("Unable to load population!")
+        raise RuntimeError("Unable to load countries!")
 except:
     exit(-1)
 
@@ -54,7 +54,7 @@ def ct_plot(t=False):
                     input("Press Enter to go back and try again")
                 else:
                     break
-            elif ct not in population.keys():
+            elif ct not in countries:
                 flag = True
             else:
                 countries.append(ct)
@@ -174,14 +174,16 @@ def ct_plot(t=False):
         return pltype
     data = {"c": get_ct(), "d": get_date(), "t": get_ts(),
             "s": get_scale(), "p": get_pltype()}
-    opt = "invalid"
-    while opt == "invalid":
+    opt = None
+    while opt == None:
         p = input(
             "Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
         opt = {"c": get_ct, "d": get_date, "t": get_ts,
-               "s": get_scale, "p": get_pltype}.get(p, "invalid")
+               "s": get_scale, "p": get_pltype}.get(p, None)
         if p == "o":
             break
+        if opt == None:
+            continue
         if type(opt) != str:
             data[p] = opt()
     print(data)
