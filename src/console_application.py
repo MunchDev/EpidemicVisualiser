@@ -14,16 +14,18 @@ try:
         raise RuntimeError("Unable to load population!")
 except:
     exit(-1)
-        
+
+
 def main():
     welcome_options = [
         "Show country tally plot",
         "Tranposed version of the above"
     ]
-    w_plot = lambda: ct_plot(True)
+    def w_plot(): return ct_plot(True)
     f = [ct_plot, w_plot]
     option = welcome_screen_option(welcome_options)
     return f[option]()
+
 
 def ct_plot(t=False):
     def get_ct():
@@ -45,7 +47,8 @@ def ct_plot(t=False):
             if ct == "":
                 if len(countries) == 0:
                     clear()
-                    print("You did not enter any valid country! Please enter at least one.")
+                    print(
+                        "You did not enter any valid country! Please enter at least one.")
                     input("Press Enter to go back and try again")
                 else:
                     break
@@ -55,6 +58,7 @@ def ct_plot(t=False):
                 countries.append(ct)
         clear()
         return countries
+
     def get_date():
         date = None
         flag = False
@@ -73,6 +77,7 @@ def ct_plot(t=False):
             else:
                 flag = True
         return date
+
     def get_ts():
         ts = None
         flag = False
@@ -91,15 +96,19 @@ def ct_plot(t=False):
                     break
             flag = True
         return ts
+
     def get_scale():
         scale = []
         flag = False
         while True:
             clear()
             print("Step 4: Choose the scale you will be using")
-            print("Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale")
-            print("Support multiple countries. If only one string of scale is provided, it")
-            print("will used across all plots. If the number of scale is smaller than the")
+            print(
+                "Scale -- Set to 'linear' for linear scale or 'log' for logarithmic scale")
+            print(
+                "Support multiple countries. If only one string of scale is provided, it")
+            print(
+                "will used across all plots. If the number of scale is smaller than the")
             print('number of countries, the rest will be taken as default of "log".\n')
             print("Leave empty to proceed to Step 5.\n")
             if flag:
@@ -109,7 +118,8 @@ def ct_plot(t=False):
             if s == "":
                 if len(scale) == 0:
                     clear()
-                    print("You did not enter any valid scale! Please enter at least one.")
+                    print(
+                        "You did not enter any valid scale! Please enter at least one.")
                     input("Press Enter to go back and try again")
                 elif len(scale) == 1:
                     scale = scale[0]
@@ -122,17 +132,22 @@ def ct_plot(t=False):
                 scale.append(s)
         clear()
         return scale
+
     def get_pltype():
         pltype = []
         flag = False
         while True:
             clear()
             print("Step 5: Choose the plot type(s) you will be using")
-            print("Plot type -- Show plot of confirmed cases (c), deaths (d), recovered cases (r),")
+            print(
+                "Plot type -- Show plot of confirmed cases (c), deaths (d), recovered cases (r),")
             print("active cases (a) or any combination of these.")
-            print("Support multiple countries. If only one string of plot type is provided, it")
-            print("will used across all plots. If the number of plot type is smaller than")
-            print('the number of countries, the rest will be taken as default of "cdra".\n')
+            print(
+                "Support multiple countries. If only one string of plot type is provided, it")
+            print(
+                "will used across all plots. If the number of plot type is smaller than")
+            print(
+                'the number of countries, the rest will be taken as default of "cdra".\n')
             print("Leave empty to proceed to finish.\n")
             if flag:
                 print("Plot type is invalid! Try again.\n")
@@ -141,7 +156,8 @@ def ct_plot(t=False):
             if p == "":
                 if len(pltype) == 0:
                     clear()
-                    print("You did not enter any valid plot type! Please enter at least one.")
+                    print(
+                        "You did not enter any valid plot type! Please enter at least one.")
                     input("Press Enter to go back and try again")
                 if len(pltype) == 1:
                     pltype = pltype[0]
@@ -154,18 +170,24 @@ def ct_plot(t=False):
                 pltype.append(p)
         clear()
         return pltype
-    data = {"c":get_ct(), "d":get_date(), "t":get_ts(), "s":get_scale(), "p":get_pltype()}
+    data = {"c": get_ct(), "d": get_date(), "t": get_ts(),
+            "s": get_scale(), "p": get_pltype()}
     opt = "invalid"
     while opt == "invalid":
-        p = input("Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
-        opt = {"c":get_ct, "d":get_date, "t":get_ts, "s":get_scale, "p":get_pltype}.get(p, "invalid")
+        p = input(
+            "Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
+        opt = {"c": get_ct, "d": get_date, "t": get_ts,
+               "s": get_scale, "p": get_pltype}.get(p, "invalid")
         if p == "o":
             break
         if type(opt) != str:
             data[p] = opt()
     print(data)
-    plot_tally(data["c"], data["d"], data["t"], scale=data["s"], plot_type=data["p"], transpose=t)
+    plot_tally(data["c"], data["d"], data["t"],
+               scale=data["s"], plot_type=data["p"], transpose=t)
     return 0
+
+
 def welcome_screen_option(options):
     i = None
     while True:
@@ -182,6 +204,7 @@ def welcome_screen_option(options):
             break
     clear()
     return i - 1
-    
+
+
 if __name__ == "__main__":
     main()
