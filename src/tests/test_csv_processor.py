@@ -22,7 +22,7 @@ def test_fetch_data():
         assert cast(Dict[str, Any], fetch_data(date, test_flag=True))["code"] == 0
 
     # 2 - Invalid dates
-    invalid_dates: List[str] = ["01-4-2020", "1-05-2020", "01-06-20"]
+    invalid_dates: List[str] = ["08+05+2020", "08052020", "2020-05-08"]
     for date in invalid_dates:
         assert cast(Dict[str, Any], fetch_data(date, test_flag=True))["code"] == 2
 
@@ -33,6 +33,6 @@ def test_parse_data():
         assert cast(Dict[str, Any], parse_data(date, test_flag=True))["code"] == 0
 
     # 2 - Invalid dates
-    invalid_dates: List[str] = ["01-4-2020", "1-05-2020", "01-06-20"]
+    invalid_dates: List[str] = ["08+05+2020", "08052020", "2020-05-08"]
     for date in invalid_dates:
         assert cast(Dict[str, Any], parse_data(date, test_flag=True))["code"] == 2
