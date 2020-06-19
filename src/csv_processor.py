@@ -11,7 +11,7 @@ It is highly suggested that only parse_data() should be exported.
 """
 
 # Helper function
-from helper import is_valid_date, print_error as stderr, print_type_error as t_stderr
+from helper import normalise_date, print_error as stderr, print_type_error as t_stderr
 
 # Used to download CSV file
 # And HTTP operations
@@ -84,7 +84,8 @@ def fetch_data(date: str, **kwargs: bool) -> Union[List[List[str]], Dict[str, An
         return {"err": "test_flag is invalid", "code": 1}
 
     # Parameters validation
-    if not is_valid_date(date):
+    date = normalise_date(date)
+    if date == "":
         err = f"Your input: {date} is not a valid date. Maybe it is a typo?"
         if test_flag:
             return {"err": err, "code": 2}
@@ -224,12 +225,12 @@ def parse_data(date: str, **kwargs: bool) -> Union[Dict[str, List[int]], Dict[st
         return {"err": "test_flag is invalid", "code": 1}
 
     # Parameters validation
-    if not is_valid_date(date):
+    date = normalise_date(date)
+    if date == "":
         err = f"Your input: {date} is not a valid date. Maybe it is a typo?"
         if test_flag:
             return {"err": err, "code": 2}
-        else:
-            return {"": [""]}
+        return {"": []}
 
     # Get absolute path to current source file
     # To be imported only!
