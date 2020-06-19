@@ -1,4 +1,18 @@
+# Used by static type checker
 from typing import Dict, Any, List, cast
+
+# Sys path operations
+from pathlib import Path
+import sys
+
+# Get the absolute path
+path: Path = Path(__file__).absolute()
+
+# Get source dir path and append to PATH
+path = path.parent.parent
+sys.path.append(str(path))
+
+# Import the necessary functions
 from csv_processor import fetch_data, parse_data
 
 def test_fetch_data():
