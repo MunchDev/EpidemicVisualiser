@@ -129,9 +129,9 @@ def fetch_data(date: str, **kwargs: bool) -> Union[List[List[str]], Dict[str, An
     except Exception as err:
         # Non-HTTP exceptions
         if test_flag:
-            return {"err": err, "code": -1}
+            return {"err": str(err), "code": -1}
         else:
-            stderr(err)
+            stderr(str(err))
             return [[""]]
 
     # Cast bytes to str

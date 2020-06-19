@@ -30,6 +30,9 @@ from helper import print_error as stderr
 from sys import exit
 from pathlib import Path
 
+# JSON parser
+from json import loads
+
 # Static type checking
 from typing import Any, Callable, List, Dict
 
@@ -40,7 +43,7 @@ try:
     path: Path = Path(__file__).absolute().parents[1].joinpath(
         "cache", "countries.json")
     with open(path) as f:
-        countries = f.readlines()
+        countries = loads(f.read())
 
     # Data validation
     if countries == None or len(countries) == 0:
@@ -85,7 +88,7 @@ def main() -> int:
         return ct_plot(True)
 
     # Corresponds to available options
-    f: List[Callable] = [ct_plot, w_plot]
+    f: List[Callable[[], int]] = [ct_plot, w_plot]
 
     # Collects user's option
     option: int = welcome_screen_option(welcome_options)
@@ -117,7 +120,7 @@ def ct_plot(transpose: bool = False) -> int:
 
         # Loop control flag
         flag: bool = False
-        countries: List[str] = []
+        countries_list: List[str] = []
 
         # Loop to do validation check and collect multiple countries
         while True:
@@ -145,7 +148,7 @@ def ct_plot(transpose: bool = False) -> int:
                 # Empty input is used to exit, if at least
                 # one country has been provided.
                 # Otherwise, reports an error and redoes.
-                if len(countries) == 0:
+                if len(countries_list) == 0:
                     clear()
                     print(
                         "You did not enter any valid country! Please enter at least one.")
@@ -156,9 +159,9 @@ def ct_plot(transpose: bool = False) -> int:
                 # Check for failed validation and set the flag
                 flag = True
             else:
-                countries.append(country)
+                countries_list.append(country)
         clear()
-        return countries
+        return countries_list
 
     def get_date() -> str:
         """A sub-function collecting the date from the user"""
@@ -334,14 +337,14 @@ def ct_plot(transpose: bool = False) -> int:
         pass
 
     # Ask user to verify and confirm the input.
-    opt: Callable = dummy_opt
+    opt: Callable[[], Any] = dummy_opt
     while True:
         # Ask for any changes
         p: str = input(
             "Do you want to change (c)ountries, (t)imespan, (s)cale, (p)lot type or are you (o)kay? > ").lower()
 
         # Determine what to change and call the particular sub-function
-        possible_options: Dict[str, Callable] = {
+        possible_options: Dict[str, Callable[[], Any]] = {
             "c": get_ct, "d": get_date, "t": get_ts, "s": get_scale, "p": get_pltype}
         opt = possible_options.get(p, dummy_opt)
 
