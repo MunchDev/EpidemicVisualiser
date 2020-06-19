@@ -12,8 +12,42 @@ from os import system, name
 # Used by static type checker
 from typing import Any, Match, Pattern, Sequence, Type, cast
 
+# Used for date checking
+# Credit: Ofir Luzon
+# Link: https://stackoverflow.com/questions/15491894/regex-to-validate-date-format-dd-mm-yyyy
+valid_date_re: Pattern[Any] = re.compile(
+    r"^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(" +
+    r"?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2)" +
+    r")(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-" +
+    r"|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]" +
+    r"|[2468][048]|[13579][26])|(?:(?:16|[2468][" +
+    r"048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[" +
+    r"0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4" +
+    r"(?:(?:1[6-9]|[2-9]\d)?\d{2})$", re.VERBOSE)
 
-def modify_date(date: str, n: int = 0) -> str:
+date_format_re: Pattern[Any] = re.compile(r"^(\d+)[-/.](\d+)[-/.](?:20)?(\d+)$", re.VERBOSE)
+
+def is_valid_date(date: str) -> bool:
+    """Check if the date format is valid
+
+    Parameters
+    ----------
+    str:
+        The date in any OS-supported format
+
+    Returns
+    -------
+    bool
+        Whether it is a valid date or not
+    """
+
+    # Match the date against the pattern
+    if valid_date_re.match(date) == None:
+        return False
+    return True
+
+
+def normalise_date(date: str, n: int = 0) -> str:
     """Take any arbitrary date format and convert it to a uniform format
 
     (Optional) Offset the date by a number of days
@@ -27,19 +61,27 @@ def modify_date(date: str, n: int = 0) -> str:
 
     Returns
     -------
-    Uniformed date format, offset if available
+    str:
+        Uniformed date format, offset if available
     """
 
-    # Create Regex object for matching
-    date_re: Pattern[Any] = re.compile(
-        r"\s*(\d+)[-/](\d+)[-/](?:20)?(\d+)\s*", re.VERBOSE)    
+    # Input validation
+    if not is_valid_date(date):
+        return ""
 
     # Match the date against the pattern
     # then cast it to the deterministic type
-    matching: Match[Any] = cast(Match[Any], date_re.match(date))
+    matching: Match[Any] = cast(Match[Any], date_format_re.match(date))
 
     # Take all matching groups
-    matching_group: Sequence[Any] = matching.groups()
+    # Can be None when date format is unrecognisable
+    matching_group: Sequence[Any] = []
+    try:
+        matching_group = matching.groups()
+
+    # When None, return empty string
+    except AttributeError:
+        return ""
 
     # Get formatted string
     # Return if no offset
@@ -50,29 +92,17 @@ def modify_date(date: str, n: int = 0) -> str:
     # With offset
     else:
         # Turn to datetime object
-        datetime_obj: datetime = datetime.strptime(formatted_string, "%d-%m-%Y")
+        datetime_obj: datetime = datetime.strptime(
+            formatted_string, "%d-%m-%Y")
 
         # Offset
         datetime_obj += timedelta(days=n)
 
         # Turn to date string
         date = datetime_obj.strftime("%d-%m-%Y")
-        
+
         # Return offset date
         return date
-
-
-def is_valid_date(date: str) -> bool:
-    if len(date) != 10:
-        return False
-    c = date.split("-")
-    if len(c) != 3:
-        return False
-    if len(c[0]) != 2 or len(c[1]) != 2 or len(c[2]) != 4:
-        return False
-    if not (c[0].isdigit() and c[1].isdigit() and c[2].isdigit()):
-        return False
-    return True
 
 
 def clear():
