@@ -4,6 +4,12 @@ This repository contains a visualiser and prediction model for the COVID-19 situ
 
 Note: This is a school project, feel free to send me a PR!
 
+__Status__: I'm too busy with school work to continue this project! However, if you stumble
+upon this, these are things you can update to make it work again:
+
+- The structure of the file published JHU has changed over the past two years. You need to
+update the CSV parser to make it work.
+
 ## Go to LiveNotes
 
 |Branch                   |Notebook on Binder                                            |
